@@ -20,9 +20,9 @@ public enum CaraDado {
     CINCO (5, 5, new ImageIcon("resources/caracinco.png")),
     GUSANO (6, 5, new ImageIcon("resources/caragusano.png"));
     
-    private int id;
-    private int puntos;
-    private ImageIcon imagen;
+    private final int id;
+    private final int puntos;
+    private final ImageIcon imagen;
     
     private CaraDado(int id, int puntos, ImageIcon imagen){
         this.id = id;
