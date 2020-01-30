@@ -13,16 +13,21 @@ import javax.swing.ImageIcon;
  */
 public enum Racion {
     
-    R21(21, 1, new ImageIcon());
+    R21(21, 1, new ImageIcon("resources/r21.png")),
+    R22(22, 1, new ImageIcon("resources/r22.png")),
+    R23(23, 1, new ImageIcon("resources/r23.png")),
+    R24(24, 1, new ImageIcon("resources/r24.png"));
     
     private final int valor;
     private final int numeroGusanos;
     private final ImageIcon imagen;
+    private boolean disponible; // La ración está dada la vuelta o no
 
     private Racion(int valor, int numeroGusanos, ImageIcon imagen) {
         this.valor = valor;
         this.numeroGusanos = numeroGusanos;
         this.imagen = imagen;
+        this.disponible = true;
     }
 
     public int getValor() {
@@ -37,4 +42,8 @@ public enum Racion {
         return imagen;
     }
     
+    // Este método hace que la Racion quede fuera del juego
+    public void ocultarRacion(){
+        this.disponible = false;
+    }
 }
