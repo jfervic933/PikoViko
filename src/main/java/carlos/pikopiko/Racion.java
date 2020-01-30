@@ -46,4 +46,11 @@ public enum Racion {
     public void ocultarRacion(){
         this.disponible = false;
     }
+
+    @Override
+    public String toString() {
+        return "Racion{" + "valor=" + valor + ", numeroGusanos=" + numeroGusanos + ", disponible=" + disponible + '}';
+    }
+    
+    
 }
