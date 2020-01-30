@@ -467,7 +467,29 @@ public class Programa extends javax.swing.JFrame {
             System.out.println("Dado " + (i+1));
         }
         
-        System.out.println(validarListaDadosSeleccionados(listaDadosSeleccionados));
+        
+        if(validarListaDadosSeleccionados(listaDadosSeleccionados)){
+            System.out.println("Lista de dados  válida");
+            // Hay que bloquear esos dados seleccionados
+            for(int i:listaDadosSeleccionados){
+                // Bloqueo el dado
+                aux.getTiradaDados()[i].bloquear();
+                // Deshabilito el label
+                switch(i){
+                    case 0: this.jLabel18.setEnabled(false);
+                            this.jCheckBox1.setEnabled(false);
+                            break;
+                    case 1: this.jLabel19.setEnabled(false);break;
+                    case 2: this.jLabel20.setEnabled(false);break;
+                    case 3: this.jLabel21.setEnabled(false);break;
+                    case 4: this.jLabel22.setEnabled(false);break;
+                    case 5: this.jLabel23.setEnabled(false);break;
+                    case 6: this.jLabel24.setEnabled(false);break;
+                    case 7: this.jLabel25.setEnabled(false);break;
+
+                }
+            }
+        }
     }//GEN-LAST:event_seleccDadosActionPerformed
 
     public static void main(String args[]) {
