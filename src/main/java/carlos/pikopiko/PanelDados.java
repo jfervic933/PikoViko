@@ -225,8 +225,8 @@ public class PanelDados extends javax.swing.JPanel {
            this.jLabel8.setIcon((aux.getTiradaDados()[7].getImagen()));
         }
         System.out.println("Dados Seleccionados: ");
-        for (int i = 0; i < aux.getTiradaDados().length; i++) {
-            System.out.println(aux.getTiradaDados()[i].isBloqueado());
+        for (Dado tiradaDado : aux.getTiradaDados()) {
+            System.out.println(tiradaDado.isBloqueado());
         }
     }//GEN-LAST:event_jButtonLanzarActionPerformed
 
@@ -241,6 +241,8 @@ public class PanelDados extends javax.swing.JPanel {
 //        }
         
     }//GEN-LAST:event_jButtonSeleccionarDadosActionPerformed
+    
+// Devuelve una lista con los dados seleccionados en los checkbox
     private ArrayList<Integer> seleccionarDados(){
         ArrayList<Integer> listaSeleccionados = new ArrayList<>();
 
