@@ -37,9 +37,6 @@ public class Parrilla {
         lista.values().forEach(System.out::println);
         
     }
-    
-    public static void main(String ... args){
-        new Parrilla().imprimirParrilla();
-    }
+
     
 }

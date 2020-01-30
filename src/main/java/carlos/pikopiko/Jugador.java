@@ -15,12 +15,14 @@ public class Jugador {
 
     private String nombre;
     private Dado[] tiradaDados;
+    private Dado[] dadosSeleccionados;
     private boolean turno;
     private ArrayList<Ficha> misFichas;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.tiradaDados = new Dado[8];
+        this.dadosSeleccionados = new Dado[8];
         // Rellena el array de dados del jugador
         for (int i = 0; i < tiradaDados.length; i++) {
             tiradaDados[i] = new Dado();
