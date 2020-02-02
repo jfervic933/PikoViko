@@ -17,7 +17,7 @@ public class Jugador {
     private Dado[] tiradaDados;
     private Dado[] dadosSeleccionados;
     private boolean turno;
-    private ArrayList<Ficha> misFichas;
+    private ArrayList<Racion> misRaciones;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -28,7 +28,7 @@ public class Jugador {
             tiradaDados[i] = new Dado();
         }
         turno = false;
-        misFichas = new ArrayList<>();
+        misRaciones = new ArrayList<>();
     }
 
     // Tira de nuevo los dados no seleccionados
@@ -62,7 +62,16 @@ public class Jugador {
         return turno;
     }
 
-    public ArrayList<Ficha> getMisFichas() {
-        return misFichas;
+    public ArrayList<Racion> getMisRaciones() {
+        return misRaciones;
+    }
+    
+    public boolean todosBloqueados(){
+        for(Dado aux:tiradaDados){
+            if (!aux.isBloqueado()){
+                return false;
+            }
+        }
+        return true;
     }
 }
