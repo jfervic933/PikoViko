@@ -8,6 +8,7 @@ package carlos.pikopiko;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -19,19 +20,30 @@ public class Programa extends javax.swing.JFrame {
 
     private static ArrayList<Jugador> listaJugadores;
     public static int turnoJugador;
-    private static ArrayList<JLabel> listaDados = new ArrayList<>();
+    private static final Parrilla PARRILLA = new Parrilla();
+    private static final ArrayList<JLabel> LISTA_DADOS = new ArrayList<>();
+    private static final ArrayList<JLabel> LISTA_RACIONES = new ArrayList<>();
+    private static final ArrayList<JCheckBox> LISTA_CHECK = new ArrayList<>();
 
     public Programa() {
         if (inicializarListaJugadores()) {
             initComponents();
-            reiniciarRaciones();
-            rellenarConjuntoDados();
-            reiniciarDados();
+            rellenarListaDadosJLabel();
+            rellenarListaRacionesJLabel();
+            rellenarListaCheck();
+            reiniciarJLabelRaciones();
+            reiniciarJLabelDados();
+            reiniciarListaCheck();
+            // Inicialmente el botón seleccionar dado está deshabilitado
+            this.seleccDados.setEnabled(false);
+            this.jTextArea1.setEditable(false);
+            this.jTextArea1.setText("Bienvenido al Juego del Piko Piko.\n"
+                    + "Comienza el jugador: ... lanzando los dados...");
+
         } else {
             JOptionPane.showMessageDialog(null, "Ha cancelado, hasta pronto");
             System.exit(0);
         }
-
     }
 
     // Este método enseña un diálogo para escoger número de jugadores y devuelve
@@ -101,47 +113,55 @@ public class Programa extends javax.swing.JFrame {
 
     private ArrayList<Integer> seleccionarDados() {
         ArrayList<Integer> listaSeleccionados = new ArrayList<>();
-
-        if (this.jCheckBox1.isEnabled()) {
-            if (jCheckBox1.isSelected()) {
-                listaSeleccionados.add(0);
+        JCheckBox aux;
+        for (int i = 0;i<LISTA_CHECK.size();i++){
+            aux = LISTA_CHECK.get(i);
+            // Si ese check está habilitado y seleccionado
+            // se guarda que ese dado está seleccionado
+            if (aux.isEnabled()&&aux.isSelected()){
+                listaSeleccionados.add(i);
             }
         }
-        if (this.jCheckBox2.isEnabled()) {
-            if (jCheckBox2.isSelected()) {
-                listaSeleccionados.add(1);
-            }
-        }
-        if (this.jCheckBox3.isEnabled()) {
-            if (jCheckBox3.isSelected()) {
-                listaSeleccionados.add(2);
-            }
-        }
-        if (this.jCheckBox4.isEnabled()) {
-            if (jCheckBox4.isSelected()) {
-                listaSeleccionados.add(3);
-            }
-        }
-        if (this.jCheckBox5.isEnabled()) {
-            if (jCheckBox5.isSelected()) {
-                listaSeleccionados.add(4);
-            }
-        }
-        if (this.jCheckBox6.isEnabled()) {
-            if (jCheckBox6.isSelected()) {
-                listaSeleccionados.add(5);
-            }
-        }
-        if (this.jCheckBox7.isEnabled()) {
-            if (jCheckBox7.isSelected()) {
-                listaSeleccionados.add(6);
-            }
-        }
-        if (this.jCheckBox8.isEnabled()) {
-            if (jCheckBox8.isSelected()) {
-                listaSeleccionados.add(7);
-            }
-        }
+//        if (this.jCheckBox1.isEnabled()) {
+//            if (jCheckBox1.isSelected()) {
+//                
+//            }
+//        }
+//        if (this.jCheckBox2.isEnabled()) {
+//            if (jCheckBox2.isSelected()) {
+//                listaSeleccionados.add(1);
+//            }
+//        }
+//        if (this.jCheckBox3.isEnabled()) {
+//            if (jCheckBox3.isSelected()) {
+//                listaSeleccionados.add(2);
+//            }
+//        }
+//        if (this.jCheckBox4.isEnabled()) {
+//            if (jCheckBox4.isSelected()) {
+//                listaSeleccionados.add(3);
+//            }
+//        }
+//        if (this.jCheckBox5.isEnabled()) {
+//            if (jCheckBox5.isSelected()) {
+//                listaSeleccionados.add(4);
+//            }
+//        }
+//        if (this.jCheckBox6.isEnabled()) {
+//            if (jCheckBox6.isSelected()) {
+//                listaSeleccionados.add(5);
+//            }
+//        }
+//        if (this.jCheckBox7.isEnabled()) {
+//            if (jCheckBox7.isSelected()) {
+//                listaSeleccionados.add(6);
+//            }
+//        }
+//        if (this.jCheckBox8.isEnabled()) {
+//            if (jCheckBox8.isSelected()) {
+//                listaSeleccionados.add(7);
+//            }
+//        }
         return listaSeleccionados;
     }
 
@@ -512,15 +532,22 @@ public class Programa extends javax.swing.JFrame {
         Jugador jugadorAux = listaJugadores.get(Programa.turnoJugador);
         // Tira los dados
         jugadorAux.tirarDados();
-        // Recorro los ocho dados
-        for (int i = 0;i<jugadorAux.getTiradaDados().length;i++){
+        // Recorre los ocho dados
+        for (int i = 0; i < jugadorAux.getTiradaDados().length; i++) {
             // Obtengo cada dado
             Dado dadoAux = jugadorAux.getTiradaDados()[i];
             // Si ese dado no está bloqueado, cambio la imagen por la nueva
-            if(!dadoAux.isBloqueado()){
-                listaDados.get(i).setIcon(dadoAux.getImagen());
+            if (!dadoAux.isBloqueado()) {
+                LISTA_DADOS.get(i).setIcon(dadoAux.getImagen());
             }
         }
+        // Se deshabilita el botón lanzar dados hasta que seleccione dados
+        // o termine el turno
+        this.lanzarDados.setEnabled(false);
+        // Se habilita el botón de seleccionar dados
+        this.seleccDados.setEnabled(true);
+        // Muestra el mensaje de ayuda
+        this.jTextArea1.setText("Ahora debes seleccionar dados o terminar tu turno...");
     }//GEN-LAST:event_lanzarDadosActionPerformed
 
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
@@ -529,12 +556,13 @@ public class Programa extends javax.swing.JFrame {
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
         // Valida esa lista para ver si no hay dados con distinto valor
-        for (int i : listaDadosSeleccionados) {
-            System.out.println("Dado " + (i + 1));
-        }
-
         if (validarListaDadosSeleccionados(listaDadosSeleccionados)) {
-            System.out.println("Lista de dados  válida");
+            this.jTextArea1.setText("Selección de dados válida...\n"
+                    + "Ahora puedes:\n"
+                    + "\tA - Volver a lanzar dados\n"
+                    + "\tB - Coger una ración\n"
+                    + "\tC - Robar una ración\n"
+                    + "\tD - Terminar tu turno");
             // Hay que bloquear esos dados seleccionados
             for (int i : listaDadosSeleccionados) {
                 // Bloqueo el dado
@@ -542,43 +570,19 @@ public class Programa extends javax.swing.JFrame {
                 // Deshabilito el label
                 deshabilitarDado(i);
             }
+            // Se habilita el botón para lanzar dados
+            this.lanzarDados.setEnabled(true);
+            // Se deshabilita el botón de selección de dados
+            this.seleccDados.setEnabled(false);
+        } else {
+            this.jTextArea1.setText("Selección de dados no válida...\n"
+                    + "Ahora puedes:\n"
+                    + "\tA - Hacer una nueva selección\n"
+                    + "\tB - Coger una ración\n"
+                    + "\tC - Robar una ración\n"
+                    + "\tD - Terminar tu turno");
         }
     }//GEN-LAST:event_seleccDadosActionPerformed
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Programa principal = new Programa();
-                principal.setBounds(500, 100, 1100, 800);
-                principal.setResizable(false);
-                principal.setVisible(true);
-            }
-        });
-    }
 
     private void deshabilitarDado(int i) {
         switch (i) {
@@ -618,59 +622,110 @@ public class Programa extends javax.swing.JFrame {
         }
     }
 
-    private void reiniciarRaciones() {
-        jLabel2.setText("");
-        jLabel2.setIcon(Racion.R21.getImagen());
-        jLabel3.setText("");
-        jLabel3.setIcon(Racion.R22.getImagen());
-        jLabel4.setText("");
-        jLabel4.setIcon(Racion.R23.getImagen());
-        jLabel5.setText("");
-        jLabel5.setIcon(Racion.R24.getImagen());
-        jLabel6.setText("");
-        jLabel6.setIcon(Racion.R25.getImagen());
-        jLabel7.setText("");
-        jLabel7.setIcon(Racion.R26.getImagen());
-        jLabel8.setText("");
-        jLabel8.setIcon(Racion.R27.getImagen());
-        jLabel9.setText("");
-        jLabel9.setIcon(Racion.R28.getImagen());
-        jLabel10.setText("");
-        jLabel10.setIcon(Racion.R29.getImagen());
-        jLabel11.setText("");
-        jLabel11.setIcon(Racion.R30.getImagen());
-        jLabel12.setText("");
-        jLabel12.setIcon(Racion.R31.getImagen());
-        jLabel13.setText("");
-        jLabel13.setIcon(Racion.R32.getImagen());
-        jLabel14.setText("");
-        jLabel14.setIcon(Racion.R33.getImagen());
-        jLabel15.setText("");
-        jLabel15.setIcon(Racion.R34.getImagen());
-        jLabel16.setText("");
-        jLabel16.setIcon(Racion.R35.getImagen());
-        jLabel17.setText("");
-        jLabel17.setIcon(Racion.R36.getImagen());
+    // Añade todos los JCheckBox a una lista
+    private void rellenarListaCheck() {
+        LISTA_CHECK.add(jCheckBox1);
+        LISTA_CHECK.add(jCheckBox2);
+        LISTA_CHECK.add(jCheckBox3);
+        LISTA_CHECK.add(jCheckBox4);
+        LISTA_CHECK.add(jCheckBox5);
+        LISTA_CHECK.add(jCheckBox6);
+        LISTA_CHECK.add(jCheckBox7);
+        LISTA_CHECK.add(jCheckBox8);
     }
 
-    private void reiniciarDados() {
+    // Establece todos los checkbox sin seleccionar
+    private void reiniciarListaCheck(){
+        for(JCheckBox aux:LISTA_CHECK){
+            aux.setSelected(false);
+        }
+    }
+    
+    // Añade todos los JLabel de los dados a una lista de JLabel
+    private void rellenarListaDadosJLabel() {
+        LISTA_DADOS.add(jLabel18);
+        LISTA_DADOS.add(jLabel19);
+        LISTA_DADOS.add(jLabel20);
+        LISTA_DADOS.add(jLabel21);
+        LISTA_DADOS.add(jLabel22);
+        LISTA_DADOS.add(jLabel23);
+        LISTA_DADOS.add(jLabel24);
+        LISTA_DADOS.add(jLabel25);
+    }
+
+    // Establece a cada JLabel del dado su imagen inicial para comenzar el juego
+    private void reiniciarJLabelDados() {
         ImageIcon icon = new ImageIcon("resources/carauno.png");
-        this.jLabel18.setIcon(icon);
-        this.jLabel18.setText("");
-        this.jLabel19.setIcon(icon);
-        this.jLabel19.setText("");
-        this.jLabel20.setIcon(icon);
-        this.jLabel20.setText("");
-        this.jLabel21.setIcon(icon);
-        this.jLabel21.setText("");
-        this.jLabel22.setIcon(icon);
-        this.jLabel22.setText("");
-        this.jLabel23.setIcon(icon);
-        this.jLabel23.setText("");
-        this.jLabel24.setIcon(icon);
-        this.jLabel24.setText("");
-        this.jLabel25.setIcon(icon);
-        this.jLabel25.setText("");
+        for (JLabel aux : LISTA_DADOS) {
+            aux.setIcon(icon);
+            aux.setText("");
+        }
+    }
+
+    // Añade todos los JLabel de las raciones a una lista de JLabel
+    private void rellenarListaRacionesJLabel() {
+        LISTA_RACIONES.add(jLabel2);
+        LISTA_RACIONES.add(jLabel3);
+        LISTA_RACIONES.add(jLabel4);
+        LISTA_RACIONES.add(jLabel5);
+        LISTA_RACIONES.add(jLabel6);
+        LISTA_RACIONES.add(jLabel7);
+        LISTA_RACIONES.add(jLabel8);
+        LISTA_RACIONES.add(jLabel9);
+        LISTA_RACIONES.add(jLabel10);
+        LISTA_RACIONES.add(jLabel11);
+        LISTA_RACIONES.add(jLabel12);
+        LISTA_RACIONES.add(jLabel13);
+        LISTA_RACIONES.add(jLabel14);
+        LISTA_RACIONES.add(jLabel15);
+        LISTA_RACIONES.add(jLabel16);
+        LISTA_RACIONES.add(jLabel17);
+    }
+
+    // Establece las imágenes de cada ración en el JLabel correspondiente
+    private void reiniciarJLabelRaciones() {
+        for (int i = 0; i < Parrilla.NUMERO_RACIONES; i++) {
+            JLabel labelAux = LISTA_RACIONES.get(i);
+            labelAux.setText("");
+            labelAux.
+                    setIcon(PARRILLA.getRacionParrilla(i + Parrilla.VALOR_RACION_INICIAL).getImagen());
+
+        }
+    }
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Programa principal = new Programa();
+                principal.setBounds(500, 100, 1100, 800);
+                principal.setResizable(false);
+                principal.setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -721,14 +776,4 @@ public class Programa extends javax.swing.JFrame {
     private javax.swing.JButton seleccDados;
     // End of variables declaration//GEN-END:variables
 
-    private void rellenarConjuntoDados() {
-        listaDados.add(jLabel18);
-        listaDados.add(jLabel19);
-        listaDados.add(jLabel20);
-        listaDados.add(jLabel21);
-        listaDados.add(jLabel22);
-        listaDados.add(jLabel23);
-        listaDados.add(jLabel24);
-        listaDados.add(jLabel25);
-    }
 }
