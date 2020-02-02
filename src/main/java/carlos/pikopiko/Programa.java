@@ -65,29 +65,29 @@ public class Programa extends javax.swing.JFrame {
         // Si no hay jugadores
         return false;
     }
-    
+
     // Este método devuelve false en caso de que la lista de dados
     // contenga valores distintos o bien ya haya sido seleccionado ese valor
     private boolean validarListaDadosSeleccionados(ArrayList<Integer> lista) {
         Jugador aux = listaJugadores.get(Programa.turnoJugador);
         Dado[] tiradaJugador = aux.getTiradaDados();
-               
+
         // Si la lista de seleccionados no está vacía
-        if (!lista.isEmpty()){
+        if (!lista.isEmpty()) {
             // Caso de validación de que todos los dados sean iguales
             // Guardo valor del dado de ese primer elemento
             int valorDado = tiradaJugador[lista.get(0)].getCaraSeleccionada();
             System.out.println("Valor dado " + valorDado);
-            for(int i: lista){
-                if (tiradaJugador[i].getCaraSeleccionada()!=valorDado){
+            for (int i : lista) {
+                if (tiradaJugador[i].getCaraSeleccionada() != valorDado) {
                     System.out.println("Dados distintos");
                     return false;
                 }
             }
             // Si llega aquí es que son todass las caras iguales
             // Veamos que no hayan sido seleccionadas previamente
-            for(Dado d:tiradaJugador){
-                if (d.isBloqueado() && d.getCaraSeleccionada()==valorDado){
+            for (Dado d : tiradaJugador) {
+                if (d.isBloqueado() && d.getCaraSeleccionada() == valorDado) {
                     System.out.println("Dado seleccionado previamente");
                     return false;
                 }
@@ -454,7 +454,7 @@ public class Programa extends javax.swing.JFrame {
         if (!aux.getTiradaDados()[7].isBloqueado()) {
             this.jLabel25.setIcon((aux.getTiradaDados()[7].getImagen()));
         }
-    
+
     }//GEN-LAST:event_lanzarDadosActionPerformed
 
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
@@ -463,31 +463,18 @@ public class Programa extends javax.swing.JFrame {
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
         // Valida esa lista para ver si no hay dados con distinto valor
-        for(int i:listaDadosSeleccionados){
-            System.out.println("Dado " + (i+1));
+        for (int i : listaDadosSeleccionados) {
+            System.out.println("Dado " + (i + 1));
         }
-        
-        
-        if(validarListaDadosSeleccionados(listaDadosSeleccionados)){
+
+        if (validarListaDadosSeleccionados(listaDadosSeleccionados)) {
             System.out.println("Lista de dados  válida");
             // Hay que bloquear esos dados seleccionados
-            for(int i:listaDadosSeleccionados){
+            for (int i : listaDadosSeleccionados) {
                 // Bloqueo el dado
                 aux.getTiradaDados()[i].bloquear();
                 // Deshabilito el label
-                switch(i){
-                    case 0: this.jLabel18.setEnabled(false);
-                            this.jCheckBox1.setEnabled(false);
-                            break;
-                    case 1: this.jLabel19.setEnabled(false);break;
-                    case 2: this.jLabel20.setEnabled(false);break;
-                    case 3: this.jLabel21.setEnabled(false);break;
-                    case 4: this.jLabel22.setEnabled(false);break;
-                    case 5: this.jLabel23.setEnabled(false);break;
-                    case 6: this.jLabel24.setEnabled(false);break;
-                    case 7: this.jLabel25.setEnabled(false);break;
-
-                }
+                deshabilitarDado(i);
             }
         }
     }//GEN-LAST:event_seleccDadosActionPerformed
@@ -525,6 +512,44 @@ public class Programa extends javax.swing.JFrame {
                 principal.setVisible(true);
             }
         });
+    }
+
+    private void deshabilitarDado(int i) {
+        switch (i) {
+            case 0:
+                this.jLabel18.setEnabled(false);
+                this.jCheckBox1.setEnabled(false);
+                break;
+            case 1:
+                this.jLabel19.setEnabled(false);
+                this.jCheckBox2.setEnabled(false);
+                break;
+            case 2:
+                this.jLabel20.setEnabled(false);
+                this.jCheckBox3.setEnabled(false);
+                break;
+            case 3:
+                this.jLabel21.setEnabled(false);
+                this.jCheckBox4.setEnabled(false);
+                break;
+            case 4:
+                this.jLabel22.setEnabled(false);
+                this.jCheckBox5.setEnabled(false);
+                break;
+            case 5:
+                this.jLabel23.setEnabled(false);
+                this.jCheckBox6.setEnabled(false);
+                break;
+            case 6:
+                this.jLabel24.setEnabled(false);
+                this.jCheckBox7.setEnabled(false);
+                break;
+            case 7:
+                this.jLabel25.setEnabled(false);
+                this.jCheckBox8.setEnabled(false);
+                break;
+
+        }
     }
 
     private void reiniciarRaciones() {
