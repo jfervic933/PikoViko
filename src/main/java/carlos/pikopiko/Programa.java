@@ -8,6 +8,7 @@ package carlos.pikopiko;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,11 +19,13 @@ public class Programa extends javax.swing.JFrame {
 
     private static ArrayList<Jugador> listaJugadores;
     public static int turnoJugador;
+    private static ArrayList<JLabel> listaDados = new ArrayList<>();
 
     public Programa() {
         if (inicializarListaJugadores()) {
             initComponents();
             reiniciarRaciones();
+            rellenarConjuntoDados();
             reiniciarDados();
         } else {
             JOptionPane.showMessageDialog(null, "Ha cancelado, hasta pronto");
@@ -188,6 +191,14 @@ public class Programa extends javax.swing.JFrame {
         jCheckBox7 = new javax.swing.JCheckBox();
         jCheckBox8 = new javax.swing.JCheckBox();
         seleccDados = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -394,19 +405,87 @@ public class Programa extends javax.swing.JFrame {
                 .addComponent(seleccDados))
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jButton1.setText("Terminar turno");
+
+        jButton2.setText("Coger ración");
+
+        jButton3.setText("Robar ración");
+
+        jButton4.setText("Devolver ración");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton4)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton1)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton3)
+                                .addComponent(jButton2)))))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(394, 394, 394)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -418,7 +497,11 @@ public class Programa extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(552, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(345, Short.MAX_VALUE))
         );
 
         pack();
@@ -426,35 +509,18 @@ public class Programa extends javax.swing.JFrame {
 
     private void lanzarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosActionPerformed
         // Selecciona al jugador que le toca
-        Jugador aux = listaJugadores.get(Programa.turnoJugador);
+        Jugador jugadorAux = listaJugadores.get(Programa.turnoJugador);
         // Tira los dados
-        aux.tirarDados();
-        // Se actualizan los iconos de los dados no seleccionados
-        if (!aux.getTiradaDados()[0].isBloqueado()) {
-            this.jLabel18.setIcon((aux.getTiradaDados()[0].getImagen()));
+        jugadorAux.tirarDados();
+        // Recorro los ocho dados
+        for (int i = 0;i<jugadorAux.getTiradaDados().length;i++){
+            // Obtengo cada dado
+            Dado dadoAux = jugadorAux.getTiradaDados()[i];
+            // Si ese dado no está bloqueado, cambio la imagen por la nueva
+            if(!dadoAux.isBloqueado()){
+                listaDados.get(i).setIcon(dadoAux.getImagen());
+            }
         }
-        if (!aux.getTiradaDados()[1].isBloqueado()) {
-            this.jLabel19.setIcon((aux.getTiradaDados()[1].getImagen()));
-        }
-        if (!aux.getTiradaDados()[2].isBloqueado()) {
-            this.jLabel20.setIcon((aux.getTiradaDados()[2].getImagen()));
-        }
-        if (!aux.getTiradaDados()[3].isBloqueado()) {
-            this.jLabel21.setIcon((aux.getTiradaDados()[3].getImagen()));
-        }
-        if (!aux.getTiradaDados()[4].isBloqueado()) {
-            this.jLabel22.setIcon((aux.getTiradaDados()[4].getImagen()));
-        }
-        if (!aux.getTiradaDados()[5].isBloqueado()) {
-            this.jLabel23.setIcon((aux.getTiradaDados()[5].getImagen()));
-        }
-        if (!aux.getTiradaDados()[6].isBloqueado()) {
-            this.jLabel24.setIcon((aux.getTiradaDados()[6].getImagen()));
-        }
-        if (!aux.getTiradaDados()[7].isBloqueado()) {
-            this.jLabel25.setIcon((aux.getTiradaDados()[7].getImagen()));
-        }
-
     }//GEN-LAST:event_lanzarDadosActionPerformed
 
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
@@ -608,6 +674,10 @@ public class Programa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -643,7 +713,22 @@ public class Programa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton lanzarDados;
     private javax.swing.JButton seleccDados;
     // End of variables declaration//GEN-END:variables
+
+    private void rellenarConjuntoDados() {
+        listaDados.add(jLabel18);
+        listaDados.add(jLabel19);
+        listaDados.add(jLabel20);
+        listaDados.add(jLabel21);
+        listaDados.add(jLabel22);
+        listaDados.add(jLabel23);
+        listaDados.add(jLabel24);
+        listaDados.add(jLabel25);
+    }
 }
