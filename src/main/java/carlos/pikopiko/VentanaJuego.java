@@ -20,16 +20,17 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     private static ArrayList<Jugador> listaJugadores;
     public static int turnoJugador;
+    private TurnoJugadores gestorTurnos;
     private static final Parrilla PARRILLA = new Parrilla();
     private static final ArrayList<JLabel> LISTA_DADOS = new ArrayList<>();
     private static final ArrayList<JLabel> LISTA_RACIONES = new ArrayList<>();
     private static final ArrayList<JCheckBox> LISTA_CHECK = new ArrayList<>();
     private static final ArrayList<JLabel> LISTA_NOMBRES_JUGADORES = new ArrayList<>();
-    
 
     public VentanaJuego() {
-        // Si la inicialización de la lista de jugadores es válida
-        if (inicializarListaJugadores()) {
+        gestorTurnos = new TurnoJugadores(inicializarListaJugadores());
+        // Si hay jugadores en la lista
+        if (!gestorTurnos.getListaJugadores().isEmpty()) {
             // Crea y establece posición de los componentes gráficos en la
             // ventana
             initComponents();
@@ -73,30 +74,26 @@ public class VentanaJuego extends javax.swing.JFrame {
     // Este método inicializa la lista de jugadores, en función del número
     // de jugadores elegidos. Devuelve true si se inicializa la lista correct.
     // 
-    private boolean inicializarListaJugadores() {
+    private ArrayList<Jugador> inicializarListaJugadores() {
         int numeroJugadores = pedirNumeroJugadores();
+        ArrayList<Jugador> listaJug = new ArrayList<>();;
         // Si hay dos o más jugadores
         if (numeroJugadores > 0) {
-            listaJugadores = new ArrayList<>();
             String nombre;
             for (int i = 0; i < numeroJugadores; i++) {
-                nombre = JOptionPane.showInputDialog("Introduce tu nombre Jugador " + i + 1);
-                listaJugadores.add(new Jugador(nombre));
+                nombre = JOptionPane.showInputDialog("Introduce tu nombre Jugador " + (i + 1));
+                listaJug.add(new Jugador(nombre));
             }
-            // Aleatoriamente selecciono uno para que comience su turno
-            Random aux = new Random();
-            turnoJugador = aux.nextInt(listaJugadores.size());
-            listaJugadores.get(turnoJugador).setTurno(true);
-            return true;
         }
-        // Si no hay jugadores
-        return false;
+        // Si no hay jugadores la lista se devuelve vacía
+        return listaJug;
     }
 
     // Este método devuelve false en caso de que la lista de dados
     // contenga valores distintos o bien ya haya sido seleccionado ese valor
     private boolean validarListaDadosSeleccionados(ArrayList<Integer> lista) {
-        Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
+        //Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
+        Jugador aux = this.gestorTurnos.getJugadorTurno();
         Dado[] tiradaJugador = aux.getTiradaDados();
 
         // Si la lista de seleccionados no está vacía
@@ -776,7 +773,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     private void lanzarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosActionPerformed
         // Selecciona al jugador que le toca
-        Jugador jugadorAux = listaJugadores.get(VentanaJuego.turnoJugador);
+        //  Jugador jugadorAux = listaJugadores.get(VentanaJuego.turnoJugador);
+        Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
+
         // Tira los dados
         jugadorAux.tirarDados();
         // Recorre los ocho dados
@@ -799,7 +798,10 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
         // Selecciona al jugador que le toca
-        Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
+        Jugador aux = this.gestorTurnos.getJugadorTurno();
+        System.out.println("Turno de " + aux.getNombre());
+        
+        //Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
         // Valida esa lista para ver si no hay dados con distinto valor
@@ -813,7 +815,8 @@ public class VentanaJuego extends javax.swing.JFrame {
             // Hay que bloquear esos dados seleccionados
             for (int i : listaDadosSeleccionados) {
                 // Bloqueo el dado
-                aux.getTiradaDados()[i].bloquear();
+                aux.seleccionarDado(i);
+                //aux.getTiradaDados()[i].bloquear();
                 // Deshabilito el label
                 deshabilitarDado(i);
             }
@@ -837,6 +840,13 @@ public class VentanaJuego extends javax.swing.JFrame {
                         + "\tD - Terminar tu turno");
             }
         }
+       // Mostrar valor acumulado en el jlabel correspondiente
+       switch(gestorTurnos.getOrdenJugador()){
+           case 0: jLabel31.setText(String.valueOf(aux.getValorSeleccionados()));break;
+           case 1: jLabel33.setText(String.valueOf(aux.getValorSeleccionados()));break;
+           case 2: jLabel35.setText(String.valueOf(aux.getValorSeleccionados()));break;
+           case 3: jLabel37.setText(String.valueOf(aux.getValorSeleccionados()));
+       }
     }//GEN-LAST:event_seleccDadosActionPerformed
 
     private void deshabilitarDado(int i) {
@@ -885,14 +895,15 @@ public class VentanaJuego extends javax.swing.JFrame {
         LISTA_NOMBRES_JUGADORES.add(jLabelNombreJ3);
         LISTA_NOMBRES_JUGADORES.add(jLabelNombreJ4);
     }
-    
+
     // Este método establece los nombres de los jugadores en los respectivos
     // JLabel
-    private void reiniciarListaNombresJugadoresJLabel(){
-        for (int i = 0; i<listaJugadores.size();i++){
-            LISTA_NOMBRES_JUGADORES.get(i).setText(listaJugadores.get(i).getNombre());
+    private void reiniciarListaNombresJugadoresJLabel() {
+        for (int i = 0; i < gestorTurnos.getListaJugadores().size(); i++) {
+            LISTA_NOMBRES_JUGADORES.get(i).setText(gestorTurnos.getListaJugadores().get(i).getNombre());
         }
     }
+
     // Añade todos los JCheckBox a una lista
     private void rellenarListaCheck() {
         LISTA_CHECK.add(jCheckBox1);

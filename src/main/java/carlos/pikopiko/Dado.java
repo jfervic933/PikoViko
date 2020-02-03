@@ -62,7 +62,7 @@ public class Dado {
                 break;
         }
     }
-    
+   
     public ImageIcon getImagen(){
         return this.imagen;
     }

@@ -18,7 +18,7 @@ public class TurnoJugadores {
     private ArrayList<Jugador> listaJugadores;
     // Guarda el número del jugador al que le toca (0,1,2,3)
     // de un máximo de cuatro jugadores
-    private int turnoJugador;
+    public int turnoJugador;
 
     public TurnoJugadores(ArrayList<Jugador> listaJugadores) {
         this.listaJugadores = listaJugadores;
@@ -35,6 +35,10 @@ public class TurnoJugadores {
     
     public Jugador getJugadorTurno(){
         return this.listaJugadores.get(turnoJugador);
+    }
+    
+    public int getOrdenJugador(){
+        return turnoJugador;
     }
     
     public void pasarSiguiente(){
