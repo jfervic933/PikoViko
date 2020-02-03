@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author carlos
  */
-public class Programa extends javax.swing.JFrame {
+public class VentanaJuego extends javax.swing.JFrame {
 
     private static ArrayList<Jugador> listaJugadores;
     public static int turnoJugador;
@@ -25,7 +25,7 @@ public class Programa extends javax.swing.JFrame {
     private static final ArrayList<JLabel> LISTA_RACIONES = new ArrayList<>();
     private static final ArrayList<JCheckBox> LISTA_CHECK = new ArrayList<>();
 
-    public Programa() {
+    public VentanaJuego() {
         if (inicializarListaJugadores()) {
             initComponents();
             rellenarListaDadosJLabel();
@@ -85,7 +85,7 @@ public class Programa extends javax.swing.JFrame {
     // Este método devuelve false en caso de que la lista de dados
     // contenga valores distintos o bien ya haya sido seleccionado ese valor
     private boolean validarListaDadosSeleccionados(ArrayList<Integer> lista) {
-        Jugador aux = listaJugadores.get(Programa.turnoJugador);
+        Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
         Dado[] tiradaJugador = aux.getTiradaDados();
 
         // Si la lista de seleccionados no está vacía
@@ -631,7 +631,7 @@ public class Programa extends javax.swing.JFrame {
 
     private void lanzarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosActionPerformed
         // Selecciona al jugador que le toca
-        Jugador jugadorAux = listaJugadores.get(Programa.turnoJugador);
+        Jugador jugadorAux = listaJugadores.get(VentanaJuego.turnoJugador);
         // Tira los dados
         jugadorAux.tirarDados();
         // Recorre los ocho dados
@@ -654,7 +654,7 @@ public class Programa extends javax.swing.JFrame {
 
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
         // Selecciona al jugador que le toca
-        Jugador aux = listaJugadores.get(Programa.turnoJugador);
+        Jugador aux = listaJugadores.get(VentanaJuego.turnoJugador);
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
         // Valida esa lista para ver si no hay dados con distinto valor
@@ -802,41 +802,41 @@ public class Programa extends javax.swing.JFrame {
 
         }
     }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Programa principal = new Programa();
-                principal.setBounds(500, 100, 1100, 800);
-                principal.setResizable(false);
-                principal.setVisible(true);
-            }
-        });
-    }
+//
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Programa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                Programa principal = new Programa();
+//                principal.setBounds(500, 100, 1100, 800);
+//                principal.setResizable(false);
+//                principal.setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLabelNombreJ1;
