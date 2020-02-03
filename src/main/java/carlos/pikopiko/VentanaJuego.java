@@ -28,8 +28,14 @@ public class VentanaJuego extends javax.swing.JFrame {
     
 
     public VentanaJuego() {
+        // Si la inicialización de la lista de jugadores es válida
         if (inicializarListaJugadores()) {
+            // Crea y establece posición de los componentes gráficos en la
+            // ventana
             initComponents();
+            // Los siguientes métodos agregan ciertos componentes gráficos
+            // a distintas listas para que luego sea más cómodo trabajar con 
+            // dichos componentes
             rellenarListaDadosJLabel();
             rellenarListaRacionesJLabel();
             rellenarListaCheck();
@@ -38,10 +44,11 @@ public class VentanaJuego extends javax.swing.JFrame {
             reiniciarJLabelRaciones();
             reiniciarJLabelDados();
             reiniciarListaCheck();
-
             // Inicialmente el botón seleccionar dado está deshabilitado
             this.seleccDados.setEnabled(false);
+            // En el textArea no se puede escribir
             this.jTextArea1.setEditable(false);
+            // Mensaje inicial
             this.jTextArea1.setText("Bienvenido al Juego del Piko Piko.\n"
                     + "Comienza el jugador: ... lanzando los dados...");
 
@@ -53,7 +60,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     // Este método enseña un diálogo para escoger número de jugadores y devuelve
     // el dato seleccionado
-    private int numeroJugadores() {
+    public static int pedirNumeroJugadores() {
         Integer[] numero = {2, 3, 4};
 
         Integer opcion = (Integer) JOptionPane.showInputDialog(null, "Selecciona número de jugadores", "Elegir",
@@ -67,7 +74,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     // de jugadores elegidos. Devuelve true si se inicializa la lista correct.
     // 
     private boolean inicializarListaJugadores() {
-        int numeroJugadores = numeroJugadores();
+        int numeroJugadores = pedirNumeroJugadores();
         // Si hay dos o más jugadores
         if (numeroJugadores > 0) {
             listaJugadores = new ArrayList<>();
