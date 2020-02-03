@@ -35,7 +35,7 @@
                       <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="169" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -135,7 +135,7 @@
                   <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="54" max="32767" attributes="0"/>
+                  <EmptySpace pref="57" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -608,6 +608,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombreJ1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="18" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="J1"/>
           </Properties>
         </Component>
@@ -702,6 +705,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombreJ2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="18" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="J2"/>
           </Properties>
         </Component>
@@ -783,7 +789,7 @@
                   <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel44" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="200" max="32767" attributes="0"/>
+                  <EmptySpace pref="193" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -796,6 +802,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombreJ3">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="18" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="J3"/>
           </Properties>
         </Component>
@@ -890,6 +899,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelNombreJ4">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="18" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="J4"/>
           </Properties>
         </Component>

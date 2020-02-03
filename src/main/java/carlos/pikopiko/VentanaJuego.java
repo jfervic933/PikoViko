@@ -291,7 +291,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,6 +489,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         jLabel27.setText("Jugador 1");
 
+        jLabelNombreJ1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelNombreJ1.setText("J1");
 
         jLabel30.setText("Valor acumulado: ");
@@ -546,6 +547,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         jLabel26.setText("Jugador 2");
 
+        jLabelNombreJ2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelNombreJ2.setText("J2");
 
         jLabel32.setText("Valor acumulado:");
@@ -601,6 +603,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         jLabel28.setText("Jugador 3");
 
+        jLabelNombreJ3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelNombreJ3.setText("J3");
 
         jLabel34.setText("Valor acumulado:");
@@ -649,13 +652,14 @@ public class VentanaJuego extends javax.swing.JFrame {
                 .addComponent(jLabel40)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel44)
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel29.setText("Jugador 4");
 
+        jLabelNombreJ4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelNombreJ4.setText("J4");
 
         jLabel36.setText("Valor acumulado:");
@@ -723,7 +727,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(169, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
