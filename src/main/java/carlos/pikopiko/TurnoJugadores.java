@@ -5,7 +5,6 @@
  */
 package carlos.pikopiko;
 
-import static carlos.pikopiko.VentanaJuego.turnoJugador;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,7 +18,7 @@ public class TurnoJugadores {
     private ArrayList<Jugador> listaJugadores;
     // Guarda el número del jugador al que le toca (0,1,2,3)
     // de un máximo de cuatro jugadores
-    public static int turnoJugador;
+    private int turnoJugador;
 
     public TurnoJugadores(ArrayList<Jugador> listaJugadores) {
         this.listaJugadores = listaJugadores;
@@ -32,10 +31,6 @@ public class TurnoJugadores {
 
     public ArrayList<Jugador> getListaJugadores() {
         return listaJugadores;
-    }
-
-    public static int getTurnoJugador() {
-        return turnoJugador;
     }
     
     public Jugador getJugadorTurno(){
@@ -52,24 +47,5 @@ public class TurnoJugadores {
         }
         // Establece que el nuevo jugador tiene el turno
         this.listaJugadores.get(turnoJugador).setTurno(true);
-    }
-    
-    public static void main(String[] args) {
-        Jugador a = new Jugador("PEpe");
-        Jugador b = new Jugador ("juan");
-        Jugador c = new Jugador("lucas");
-        Jugador d = new Jugador ("Inma");
-        
-        ArrayList<Jugador> lista = new ArrayList<>();
-        lista.add(a);
-        lista.add(b);
-        lista.add(c);
-        lista.add(d);
-
-        TurnoJugadores t = new TurnoJugadores(lista);
-        for (int i = 0; i<12;i++){
-            System.out.println(t.getJugadorTurno().getNombre());
-            t.pasarSiguiente();
-        }
     }
 }
