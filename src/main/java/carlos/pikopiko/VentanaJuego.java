@@ -6,7 +6,6 @@
 package carlos.pikopiko;
 
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -185,7 +184,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         seleccDados = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonCogerRacion = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -429,7 +428,12 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         jButton1.setText("Terminar turno");
 
-        jButton2.setText("Coger ración");
+        jButtonCogerRacion.setText("Coger ración");
+        jButtonCogerRacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCogerRacionActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Robar ración");
 
@@ -449,7 +453,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                             .addGap(6, 6, 6)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jButton3)
-                                .addComponent(jButton2)))))
+                                .addComponent(jButtonCogerRacion)))))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -458,7 +462,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(jButtonCogerRacion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -844,6 +848,14 @@ public class VentanaJuego extends javax.swing.JFrame {
        mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(), gestorTurnos.getJugadorTurno());
     }//GEN-LAST:event_seleccDadosActionPerformed
 
+    private void jButtonCogerRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCogerRacionActionPerformed
+        // Selecciona al jugador que le toca
+        Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
+        System.out.println("Coger ración. Turno de " + jugadorAux.getNombre());
+        jugadorAux.cogerRacion(PARRILLA, PARRILLA.getRacionParrilla(jugadorAux.getValorSeleccionados()));
+        
+    }//GEN-LAST:event_jButtonCogerRacionActionPerformed
+
     public void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux){
         int valorDadosSeleccionados = aux.getValorSeleccionados();
         switch(ordenJugador){
@@ -981,9 +993,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButtonCogerRacion;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
