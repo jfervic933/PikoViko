@@ -64,5 +64,11 @@ public enum Racion {
         return "Racion{" + "valor=" + valor + ", numeroGusanos=" + numeroGusanos + ", disponible=" + disponible + '}';
     }
     
+    public boolean isDisponible(){
+        return disponible;
+    }
     
+    public void habilitarRacion(){
+        this.disponible = true;
+    }
 }
