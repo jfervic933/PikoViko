@@ -50,4 +50,7 @@ public class Parrilla {
         return lista.get(i);
     }
     
+    public boolean buscarRacion(Racion r){
+        return lista.containsValue(r);
+    }
 }
