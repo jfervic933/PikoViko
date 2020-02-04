@@ -5,11 +5,9 @@
  */
 package carlos.pikopiko;
 
-import java.util.ArrayList;
-
 /**
  *
- * @author carlos
+ * @author jcarlosvico
  */
 public class Jugador {
 
@@ -56,6 +54,10 @@ public class Jugador {
 
     public boolean tieneGusano(){
         return tieneGusano;
+    }
+
+    public PilaRaciones getMisRaciones() {
+        return misRaciones;
     }
     
     public void quitarGusano(){

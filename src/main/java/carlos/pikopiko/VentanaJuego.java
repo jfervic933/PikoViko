@@ -17,8 +17,6 @@ import javax.swing.JOptionPane;
  */
 public class VentanaJuego extends javax.swing.JFrame {
 
-    private static ArrayList<Jugador> listaJugadores;
-    public static int turnoJugador;
     private TurnoJugadores gestorTurnos;
     private static final Parrilla PARRILLA = new Parrilla();
     private static final ArrayList<JLabel> LISTA_DADOS = new ArrayList<>();
@@ -50,8 +48,12 @@ public class VentanaJuego extends javax.swing.JFrame {
             this.jTextArea1.setEditable(false);
             // Mensaje inicial
             this.jTextArea1.setText("Bienvenido al Juego del Piko Piko.\n"
-                    + "Comienza el jugador: ... lanzando los dados...");
-
+                    + "Comienza el jugador: ... " + gestorTurnos.getJugadorTurno().getNombre()
+                    + " lanzando los dados...");
+            this.jLabel42.setText("");
+            this.jLabel43.setText("");
+            this.jLabel44.setText("");
+            this.jLabel45.setText("");
         } else {
             JOptionPane.showMessageDialog(null, "Ha cancelado, hasta pronto");
             System.exit(0);
@@ -787,10 +789,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         // Tira los dados
         jugadorAux.tirarDados();
-        
+
         // OJO AQUI HAY QUE COMPROBAR TIRADA FALLIDA SI LOS DADOS NO BLOQUEADOS SALEN IGUALES
         // QUE LOS BLOQUEADOS -------------------------------------------
-        
         // Recorre los ocho dados
         for (int i = 0; i < jugadorAux.getTiradaDados().length; i++) {
             // Obtengo cada dado
@@ -856,6 +857,25 @@ public class VentanaJuego extends javax.swing.JFrame {
         mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(), gestorTurnos.getJugadorTurno());
     }//GEN-LAST:event_seleccDadosActionPerformed
 
+    private void establecerRacionJugadorJLabel(Jugador jugador) {
+        // Esto devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
+        int ordenJugador = gestorTurnos.getOrdenJugador();
+        ImageIcon imagen = jugador.getMisRaciones().consultarUltimaRacion().getImagen();
+        switch (ordenJugador) {
+            case 0:
+                this.jLabel42.setIcon(imagen);
+                break;
+            case 1:
+                this.jLabel43.setIcon(imagen);
+                break;
+            case 2:
+                this.jLabel44.setIcon(imagen);
+                break;
+            case 3:
+                this.jLabel45.setIcon(imagen);
+                break;
+        }
+    }
     private void jButtonCogerRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCogerRacionActionPerformed
 
         // Selecciona al jugador que le toca
@@ -868,6 +888,8 @@ public class VentanaJuego extends javax.swing.JFrame {
             // Se deshabilita el jlabel de la ración cogida
             int valorJLabel = jugadorAux.getValorSeleccionados() % Parrilla.VALOR_RACION_INICIAL;
             LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+            // Se pone la última ración del jugador en JLabel de sus raciones
+            establecerRacionJugadorJLabel(jugadorAux);
             // Ahora el jugador tiene que terminar el turno
             gestorTurnos.pasarSiguiente();
             reiniciarJLabelDados();
@@ -875,6 +897,7 @@ public class VentanaJuego extends javax.swing.JFrame {
             this.lanzarDados.setEnabled(true);
             this.seleccDados.setEnabled(false);
             jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
+            reiniciarJLabelValorAcumulado();
         } else {
             System.out.println("Probablemente no puedas coger ración");
         }
@@ -1035,6 +1058,13 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
     }
 
+    private void reiniciarJLabelValorAcumulado(){
+        this.jLabel31.setText("");
+        this.jLabel33.setText("");
+        this.jLabel35.setText("");
+        this.jLabel37.setText("");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
