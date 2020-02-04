@@ -44,6 +44,10 @@ public class TurnoJugadores {
     public void pasarSiguiente(){
         // Quita el turno del jugador que lo tiene
         this.listaJugadores.get(turnoJugador).setTurno(false);
+        // Le quita el gusano para siguientes tiradas
+        this.listaJugadores.get(turnoJugador).quitarGusano();
+        // Desbloquea sus dados de tiradas y seleccionados
+        this.listaJugadores.get(turnoJugador).desbloquearDados();
         // Establece el siguiente jugador
         turnoJugador++;
         if (turnoJugador == this.listaJugadores.size()){

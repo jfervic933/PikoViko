@@ -18,6 +18,7 @@ public class Jugador {
     private Dado[] dadosSeleccionados;
     private boolean turno;
     private PilaRaciones misRaciones;
+    private boolean tieneGusano;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -28,6 +29,7 @@ public class Jugador {
             tiradaDados[i] = new Dado();
         }
         turno = false;
+        tieneGusano = false;
         misRaciones = new PilaRaciones();
     }
 
@@ -44,11 +46,21 @@ public class Jugador {
     public void seleccionarDado(int numeroDado) {
         tiradaDados[numeroDado].bloquear();
         dadosSeleccionados[numeroDado] = tiradaDados[numeroDado];
+        if (dadosSeleccionados[numeroDado].getCaraSeleccionada() == 6){
+            tieneGusano = true;
+        }
         System.out.println("Dados seleccionados: " + numeroDado);
         System.out.println("Valor de ese dado: " + dadosSeleccionados[numeroDado].getCaraSeleccionada());
 
     }
 
+    public boolean tieneGusano(){
+        return tieneGusano;
+    }
+    
+    public void quitarGusano(){
+        tieneGusano = false;
+    }
     public int getValorSeleccionados() {
         int acumulador = 0;
         for (Dado aux : dadosSeleccionados) {
@@ -87,6 +99,12 @@ public class Jugador {
         return true;
     }
 
+    public void desbloquearDados(){
+        for(int i = 0; i<tiradaDados.length;i++){
+            tiradaDados[i].desbloquear();
+            dadosSeleccionados[i] = null;
+        }
+    }
     // El jugador guarda en su pila de raciones la Racion 
     // especificada en r de la parrilla de raciones
     public boolean cogerRacion(Parrilla parrilla, Racion r) {
