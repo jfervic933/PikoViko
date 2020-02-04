@@ -17,7 +17,7 @@ public class Jugador {
     private Dado[] tiradaDados;
     private Dado[] dadosSeleccionados;
     private boolean turno;
-    private ArrayList<Racion> misRaciones;
+    private PilaRaciones misRaciones;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -28,7 +28,7 @@ public class Jugador {
             tiradaDados[i] = new Dado();
         }
         turno = false;
-        misRaciones = new ArrayList<>();
+        misRaciones = new PilaRaciones();
     }
 
     // Tira de nuevo los dados no seleccionados
@@ -46,20 +46,21 @@ public class Jugador {
         dadosSeleccionados[numeroDado] = tiradaDados[numeroDado];
         System.out.println("Dados seleccionados: " + numeroDado);
         System.out.println("Valor de ese dado: " + dadosSeleccionados[numeroDado].getCaraSeleccionada());
-        
+
     }
 
-    public int getValorSeleccionados(){
+    public int getValorSeleccionados() {
         int acumulador = 0;
-        for(Dado aux:dadosSeleccionados){
-            
-            if (aux!=null){
-                int valor = aux.getCaraSeleccionada() == 6?5:aux.getCaraSeleccionada();
-                acumulador+=valor;
+        for (Dado aux : dadosSeleccionados) {
+            //Si hay dado seleccionado
+            if (aux != null) {
+                int valor = aux.getCaraSeleccionada() == 6 ? 5 : aux.getCaraSeleccionada();
+                acumulador += valor;
             }
         }
         return acumulador;
     }
+
     // Establece si le toca o no al jugador
     public void setTurno(boolean turno) {
         this.turno = turno;
@@ -77,16 +78,37 @@ public class Jugador {
         return turno;
     }
 
-    public ArrayList<Racion> getMisRaciones() {
-        return misRaciones;
-    }
-    
-    public boolean todosBloqueados(){
-        for(Dado aux:tiradaDados){
-            if (!aux.isBloqueado()){
+    public boolean todosBloqueados() {
+        for (Dado aux : tiradaDados) {
+            if (!aux.isBloqueado()) {
                 return false;
             }
         }
         return true;
+    }
+
+    // El jugador guarda en su pila de raciones la Racion 
+    // especificada en r de la parrilla de raciones
+    public boolean cogerRacion(Parrilla parrilla, Racion r) {
+        // Obtengo el valor de dados seleccionados del jugador
+        int valorSeleccionados = this.getValorSeleccionados();
+        // Si es un valor válido
+        if (valorSeleccionados >= 21 && valorSeleccionados <= 36) {
+            // Compruebo que esa ración está en la parrilla
+            Racion aux = parrilla.getRacionParrilla(valorSeleccionados);
+            // Si la ración no es null significa que existe en la parrilla
+            if (aux != null) {
+                if (aux.isDisponible()) {
+                    System.out.println("El jugador coge la ración de valor " + r.getValor());
+                    // Guardo la ración en la pila del jugador
+                    this.misRaciones.ponerRacion(r);
+                    // La pongo no disponible
+                    aux.ocultarRacion();
+                    System.out.println("Ahora la ración en la parrilla está " + aux.isDisponible());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
