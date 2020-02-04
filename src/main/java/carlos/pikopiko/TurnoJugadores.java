@@ -18,7 +18,7 @@ public class TurnoJugadores {
     private ArrayList<Jugador> listaJugadores;
     // Guarda el número del jugador al que le toca (0,1,2,3)
     // de un máximo de cuatro jugadores
-    public int turnoJugador;
+    private int turnoJugador;
 
     public TurnoJugadores(ArrayList<Jugador> listaJugadores) {
         this.listaJugadores = listaJugadores;

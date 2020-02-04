@@ -841,14 +841,18 @@ public class VentanaJuego extends javax.swing.JFrame {
             }
         }
        // Mostrar valor acumulado en el jlabel correspondiente
-       switch(gestorTurnos.getOrdenJugador()){
-           case 0: jLabel31.setText(String.valueOf(aux.getValorSeleccionados()));break;
-           case 1: jLabel33.setText(String.valueOf(aux.getValorSeleccionados()));break;
-           case 2: jLabel35.setText(String.valueOf(aux.getValorSeleccionados()));break;
-           case 3: jLabel37.setText(String.valueOf(aux.getValorSeleccionados()));
-       }
+       mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(), gestorTurnos.getJugadorTurno());
     }//GEN-LAST:event_seleccDadosActionPerformed
 
+    public void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux){
+        int valorDadosSeleccionados = aux.getValorSeleccionados();
+        switch(ordenJugador){
+           case 0: jLabel31.setText(String.valueOf(valorDadosSeleccionados));break;
+           case 1: jLabel33.setText(String.valueOf(valorDadosSeleccionados));break;
+           case 2: jLabel35.setText(String.valueOf(valorDadosSeleccionados));break;
+           case 3: jLabel37.setText(String.valueOf(valorDadosSeleccionados));
+       }
+    }
     private void deshabilitarDado(int i) {
         switch (i) {
             case 0:
