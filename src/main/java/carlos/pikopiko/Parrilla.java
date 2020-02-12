@@ -17,7 +17,7 @@ public class Parrilla {
     // Una parrilla es una tabla donde hacemos corresponder el valor 
     // del dado con la ficha. Esto permite ordenar la parrilla por valor, que
     // además no se puede repetir.
-    private final Map<Integer, Racion> lista;
+    private Map<Integer, Racion> lista;
     public static final int NUMERO_RACIONES = 16;
     public static final int VALOR_RACION_INICIAL = 21;
 
