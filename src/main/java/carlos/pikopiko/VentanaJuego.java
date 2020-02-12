@@ -883,21 +883,32 @@ public class VentanaJuego extends javax.swing.JFrame {
         System.out.println("Coger ración. Turno de " + jugadorAux.getNombre());
         if (jugadorAux.tieneGusano()) {
             System.out.println("El jugador tiene al menos un gusano en su poder");
+
+            // AQUI HAY QUE CONTROLAR QUE COINCIDA EXACTAMENTE CON UNA RACION DE LA PARRILLA
+            // O PUEDE QUE EL JUGADOR SE HAYA PLANTADO Y TENGA QUE COGER LA
+            // RACION DE MENOR VALOR DISPONIBLE
             // El jugador coge la ración y la pone en su pila
-            jugadorAux.cogerRacion(PARRILLA, PARRILLA.getRacionParrilla(jugadorAux.getValorSeleccionados()));
-            // Se deshabilita el jlabel de la ración cogida
-            int valorJLabel = jugadorAux.getValorSeleccionados() % Parrilla.VALOR_RACION_INICIAL;
-            LISTA_RACIONES.get(valorJLabel).setEnabled(false);
-            // Se pone la última ración del jugador en JLabel de sus raciones
-            establecerRacionJugadorJLabel(jugadorAux);
-            // Ahora el jugador tiene que terminar el turno
-            gestorTurnos.pasarSiguiente();
-            reiniciarJLabelDados();
-            reiniciarListaCheck();
-            this.lanzarDados.setEnabled(true);
-            this.seleccDados.setEnabled(false);
-            jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
-            reiniciarJLabelValorAcumulado();
+            if (jugadorAux.cogerRacion(PARRILLA, PARRILLA.getRacionParrilla(jugadorAux.getValorSeleccionados()))) {
+                // Imprimo las raciones que tiene el jugador
+                System.out.println("EL JUGADOR " + jugadorAux.getNombre() + " tiene las raciones");
+                jugadorAux.listaRac.forEach(System.out::println);
+                // Se deshabilita el jlabel de la ración cogida
+                int valorJLabel = jugadorAux.getValorSeleccionados() % Parrilla.VALOR_RACION_INICIAL;
+                LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+                // Se pone la última ración del jugador en JLabel de sus raciones
+                establecerRacionJugadorJLabel(jugadorAux);
+                // Ahora el jugador tiene que terminar el turno
+                gestorTurnos.pasarSiguiente();
+                reiniciarJLabelDados();
+                reiniciarListaCheck();
+                this.lanzarDados.setEnabled(true);
+                this.seleccDados.setEnabled(false);
+                jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
+                reiniciarJLabelValorAcumulado();
+            } else {
+                jTextArea1.setText("Imposible coger ración");
+            }
+
         } else {
             System.out.println("Probablemente no puedas coger ración");
         }
@@ -905,12 +916,20 @@ public class VentanaJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCogerRacionActionPerformed
 
     private void jButtonTerminarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTerminarTurnoActionPerformed
-        gestorTurnos.pasarSiguiente();
-        reiniciarJLabelDados();
-        reiniciarListaCheck();
-        this.lanzarDados.setEnabled(true);
-        this.seleccDados.setEnabled(false);
-        jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
+        Jugador jugador = gestorTurnos.getJugadorTurno();
+        System.out.println("Numero de raciones en la pila de " + jugador.getNombre() + " -- " +
+                jugador.getMisRaciones().numeroRaciones());
+        if (jugador.getMisRaciones().numeroRaciones()> 0) {
+            jTextArea1.setText("Debes devolver una ración");
+            System.out.println("Devolver ración ------------");
+        } else {
+            gestorTurnos.pasarSiguiente();
+            reiniciarJLabelDados();
+            reiniciarListaCheck();
+            this.lanzarDados.setEnabled(true);
+            this.seleccDados.setEnabled(false);
+            jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
+        }
     }//GEN-LAST:event_jButtonTerminarTurnoActionPerformed
 
     public void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux) {
