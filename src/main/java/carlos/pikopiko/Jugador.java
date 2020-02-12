@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package carlos.pikopiko;
 
 /**
  *
- * @author jcarlosvico
+ * @author jcarlosvico@maralboran.es
  */
 public class Jugador {
 
@@ -44,25 +40,23 @@ public class Jugador {
     public void seleccionarDado(int numeroDado) {
         tiradaDados[numeroDado].bloquear();
         dadosSeleccionados[numeroDado] = tiradaDados[numeroDado];
-        if (dadosSeleccionados[numeroDado].getCaraSeleccionada() == 6){
+        if (dadosSeleccionados[numeroDado].getCaraSeleccionada() == 6) {
             tieneGusano = true;
         }
-        System.out.println("Dados seleccionados: " + numeroDado);
-        System.out.println("Valor de ese dado: " + dadosSeleccionados[numeroDado].getCaraSeleccionada());
-
     }
 
-    public boolean tieneGusano(){
+    public boolean tieneGusano() {
         return tieneGusano;
     }
 
     public PilaRaciones getMisRaciones() {
         return misRaciones;
     }
-    
-    public void quitarGusano(){
+
+    public void quitarGusano() {
         tieneGusano = false;
     }
+
     public int getValorSeleccionados() {
         int acumulador = 0;
         for (Dado aux : dadosSeleccionados) {
@@ -101,12 +95,13 @@ public class Jugador {
         return true;
     }
 
-    public void desbloquearDados(){
-        for(int i = 0; i<tiradaDados.length;i++){
+    public void desbloquearDados() {
+        for (int i = 0; i < tiradaDados.length; i++) {
             tiradaDados[i].desbloquear();
             dadosSeleccionados[i] = null;
         }
     }
+
     // El jugador guarda en su pila de raciones la Racion 
     // especificada en r de la parrilla de raciones
     public boolean cogerRacion(Parrilla parrilla, Racion r) {
@@ -114,21 +109,32 @@ public class Jugador {
         int valorSeleccionados = this.getValorSeleccionados();
         // Si es un valor válido
         if (valorSeleccionados >= 21 && valorSeleccionados <= 36) {
-            // Compruebo que esa ración está en la parrilla
-            Racion aux = parrilla.getRacionParrilla(valorSeleccionados);
-            // Si la ración no es null significa que existe en la parrilla
-            if (aux != null) {
-                if (aux.isDisponible()) {
-                    System.out.println("El jugador coge la ración de valor " + r.getValor());
-                    // Guardo la ración en la pila del jugador
-                    this.misRaciones.ponerRacion(r);
-                    // La pongo no disponible
-                    aux.ocultarRacion();
-                    System.out.println("Ahora la ración en la parrilla está " + aux.isDisponible());
-                    return true;
+            // Recorro todas las raciones posibles desde la que tenga el valor
+            // seleccionado hasta la primera, porque puede que el jugador
+            // se haya plantado con un valor que no está disponible pero
+            // alguna ración anterior si que lo puede estar
+            for (int i = valorSeleccionados; i >= Parrilla.VALOR_RACION_INICIAL; i--) {
+                // Compruebo que esa ración está en la parrilla
+                Racion aux = parrilla.getRacionParrilla(i);
+                // Si la ración no es null significa que existe en la parrilla
+                if (aux != null) {
+                    if (aux.isDisponible()) { // La ración se puede coger
+                        // Guardo la ración en la pila del jugador
+                        this.misRaciones.ponerRacion(aux);
+                        // La pongo no disponible
+                        aux.ocultarRacion();
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Jugador{" + "nombre=" + nombre + ", turno=" + turno + ", misRaciones=" + misRaciones.toString() + ", tieneGusano=" + tieneGusano + '}';
+    }
+    
+    
 }

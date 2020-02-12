@@ -42,6 +42,7 @@ public class VentanaJuego extends javax.swing.JFrame {
             reiniciarJLabelRaciones();
             reiniciarJLabelDados();
             reiniciarListaCheck();
+            reiniciarJLabelValorAcumulado();
             // Inicialmente el botón seleccionar dado está deshabilitado
             this.seleccDados.setEnabled(false);
             // En el textArea no se puede escribir
@@ -77,7 +78,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     // 
     private ArrayList<Jugador> inicializarListaJugadores() {
         int numeroJugadores = pedirNumeroJugadores();
-        ArrayList<Jugador> listaJug = new ArrayList<>();;
+        ArrayList<Jugador> listaJug = new ArrayList<>();
         // Si hay dos o más jugadores
         if (numeroJugadores > 0) {
             String nombre;
@@ -102,10 +103,8 @@ public class VentanaJuego extends javax.swing.JFrame {
             // Caso de validación de que todos los dados sean iguales
             // Guardo valor del dado de ese primer elemento
             int valorDado = tiradaJugador[lista.get(0)].getCaraSeleccionada();
-            System.out.println("Valor dado " + valorDado);
             for (int i : lista) {
                 if (tiradaJugador[i].getCaraSeleccionada() != valorDado) {
-                    System.out.println("Dados distintos");
                     return false;
                 }
             }
@@ -113,7 +112,6 @@ public class VentanaJuego extends javax.swing.JFrame {
             // Veamos que no hayan sido seleccionadas previamente
             for (Dado d : tiradaJugador) {
                 if (d.isBloqueado() && d.getCaraSeleccionada() == valorDado) {
-                    System.out.println("Dado seleccionado previamente");
                     return false;
                 }
             }
@@ -188,7 +186,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         jButtonTerminarTurno = new javax.swing.JButton();
         jButtonCogerRacion = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButtonDevolverRacion = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -444,7 +442,12 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         jButton3.setText("Robar ración");
 
-        jButton4.setText("Devolver ración");
+        jButtonDevolverRacion.setText("Devolver ración");
+        jButtonDevolverRacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDevolverRacionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -453,7 +456,7 @@ public class VentanaJuego extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4)
+                    .addComponent(jButtonDevolverRacion)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jButtonTerminarTurno)
                         .addGroup(jPanel3Layout.createSequentialGroup()
@@ -473,7 +476,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4)
+                .addComponent(jButtonDevolverRacion)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -813,8 +816,6 @@ public class VentanaJuego extends javax.swing.JFrame {
     private void seleccDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccDadosActionPerformed
         // Selecciona al jugador que le toca
         Jugador aux = this.gestorTurnos.getJugadorTurno();
-        System.out.println("Turno de " + aux.getNombre());
-
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
         // Valida esa lista para ver si no hay dados con distinto valor
@@ -880,9 +881,8 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         // Selecciona al jugador que le toca
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
-        System.out.println("Coger ración. Turno de " + jugadorAux.getNombre());
+
         if (jugadorAux.tieneGusano()) {
-            System.out.println("El jugador tiene al menos un gusano en su poder");
 
             // AQUI HAY QUE CONTROLAR QUE COINCIDA EXACTAMENTE CON UNA RACION DE LA PARRILLA
             // O PUEDE QUE EL JUGADOR SE HAYA PLANTADO Y TENGA QUE COGER LA
@@ -890,21 +890,27 @@ public class VentanaJuego extends javax.swing.JFrame {
             // El jugador coge la ración y la pone en su pila
             if (jugadorAux.cogerRacion(PARRILLA, PARRILLA.getRacionParrilla(jugadorAux.getValorSeleccionados()))) {
                 // Imprimo las raciones que tiene el jugador
-                System.out.println("EL JUGADOR " + jugadorAux.getNombre() + " tiene las raciones");
-                jugadorAux.listaRac.forEach(System.out::println);
-                // Se deshabilita el jlabel de la ración cogida
+                System.out.println("COGER RACION - LISTA DE JUGADORES - JUSTO DESPUES DE COGERLA");
+                gestorTurnos.getListaJugadores().forEach(System.out::println);
+                // AQUI SE DEBE DESHABILITAR LA ULTIMA QUE TENGA EL JUGADOR - CUIDADO
+// Se deshabilita el jlabel de la ración cogida -OJO CORREGIR ESTO -
                 int valorJLabel = jugadorAux.getValorSeleccionados() % Parrilla.VALOR_RACION_INICIAL;
                 LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+                
                 // Se pone la última ración del jugador en JLabel de sus raciones
                 establecerRacionJugadorJLabel(jugadorAux);
+                
                 // Ahora el jugador tiene que terminar el turno
                 gestorTurnos.pasarSiguiente();
+                
                 reiniciarJLabelDados();
                 reiniciarListaCheck();
                 this.lanzarDados.setEnabled(true);
                 this.seleccDados.setEnabled(false);
                 jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
                 reiniciarJLabelValorAcumulado();
+                System.out.println("DESPUES COGER UNA RACION - LISTA DE JUGADORES -");
+                gestorTurnos.getListaJugadores().forEach(System.out::println);
             } else {
                 jTextArea1.setText("Imposible coger ración");
             }
@@ -917,11 +923,10 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     private void jButtonTerminarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTerminarTurnoActionPerformed
         Jugador jugador = gestorTurnos.getJugadorTurno();
-        System.out.println("Numero de raciones en la pila de " + jugador.getNombre() + " -- " +
-                jugador.getMisRaciones().numeroRaciones());
-        if (jugador.getMisRaciones().numeroRaciones()> 0) {
+        System.out.println("Numero de raciones en la pila de " + jugador.getNombre() + " -- "
+                + jugador.getMisRaciones().numeroRaciones());
+        if (jugador.getMisRaciones().numeroRaciones() > 0) {
             jTextArea1.setText("Debes devolver una ración");
-            System.out.println("Devolver ración ------------");
         } else {
             gestorTurnos.pasarSiguiente();
             reiniciarJLabelDados();
@@ -931,6 +936,15 @@ public class VentanaJuego extends javax.swing.JFrame {
             jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
         }
     }//GEN-LAST:event_jButtonTerminarTurnoActionPerformed
+
+    private void jButtonDevolverRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDevolverRacionActionPerformed
+        System.out.println("Devolver Racion");
+        Jugador jugador = gestorTurnos.getJugadorTurno();
+        Racion ultima = jugador.getMisRaciones().sacarRacion();
+        System.out.println("El jugador debe devolver " + ultima);
+         System.out.println("DESPUES sacar UNA RACION - LISTA DE JUGADORES -");
+        gestorTurnos.getListaJugadores().forEach(System.out::println);
+    }//GEN-LAST:event_jButtonDevolverRacionActionPerformed
 
     public void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux) {
         int valorDadosSeleccionados = aux.getValorSeleccionados();
@@ -1077,17 +1091,17 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
     }
 
-    private void reiniciarJLabelValorAcumulado(){
+    private void reiniciarJLabelValorAcumulado() {
         this.jLabel31.setText("");
         this.jLabel33.setText("");
         this.jLabel35.setText("");
         this.jLabel37.setText("");
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonCogerRacion;
+    private javax.swing.JButton jButtonDevolverRacion;
     private javax.swing.JButton jButtonTerminarTurno;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
