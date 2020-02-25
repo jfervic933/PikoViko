@@ -33,6 +33,9 @@ public class PilaRaciones {
         return pila.size();
     }
     
+    public boolean estaVacia(){
+        return pila.isEmpty();
+    }
     // Este método devuelve la ración que ocupa el última lugar de la pila
     // pero no la elimina de la pila de raciones
     public Racion consultarUltimaRacion(){

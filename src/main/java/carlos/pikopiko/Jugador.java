@@ -1,4 +1,3 @@
-
 package carlos.pikopiko;
 
 /**
@@ -13,6 +12,7 @@ public class Jugador {
     private boolean turno;
     private PilaRaciones misRaciones;
     private boolean tieneGusano;
+    private int contadorNoBloqueados;
 
     public Jugador(String nombre) {
         this.nombre = nombre;
@@ -28,14 +28,39 @@ public class Jugador {
     }
 
     // Tira de nuevo los dados no seleccionados
+    // Devuelve el número de dados movidos
     public void tirarDados() {
+        // Mueve los dados no bloqueados
+        contadorNoBloqueados = 0;
         for (Dado aux : tiradaDados) {
             if (!aux.isBloqueado()) {
+                contadorNoBloqueados++;
                 aux.moverDado();
             }
         }
     }
-
+        
+    // Miro si en la tirada he sacado valores que ya estaban bloqueados
+    // entonces tirada fallida
+    public boolean tiradaFallida(){
+        int contador = 0;
+        for (Dado aux : tiradaDados) {
+            if (!aux.isBloqueado()) {
+                for (Dado aux2: tiradaDados){
+                    if (aux!=aux2 && 
+                        aux2.isBloqueado() &&
+                        aux.getCaraSeleccionada() == aux2.getCaraSeleccionada()){
+                        contador++;
+                        break;
+                    }
+                }
+            }
+        }
+        System.out.println("Contador no bloqueado " + contadorNoBloqueados);
+        System.out.println("Contador " + contador);
+        // True si la tirada es fallida
+        return (contador == contadorNoBloqueados);
+    }
     // Selecciona ese dado y lo bloquea
     public void seleccionarDado(int numeroDado) {
         tiradaDados[numeroDado].bloquear();
@@ -84,6 +109,10 @@ public class Jugador {
 
     public boolean isTurno() {
         return turno;
+    }
+
+    public Dado[] getDadosSeleccionados() {
+        return dadosSeleccionados;
     }
 
     public boolean todosBloqueados() {
@@ -135,6 +164,5 @@ public class Jugador {
     public String toString() {
         return "Jugador{" + "nombre=" + nombre + ", turno=" + turno + ", misRaciones=" + misRaciones.toString() + ", tieneGusano=" + tieneGusano + '}';
     }
-    
-    
+
 }
