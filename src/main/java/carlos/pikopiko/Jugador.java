@@ -160,6 +160,11 @@ public class Jugador {
         return false;
     }
 
+    public boolean devolverRacion(Parrilla parrilla){
+        Racion racion = this.getMisRaciones().sacarRacion();
+        parrilla.devolverRacion(racion);
+        return true;
+    }
     @Override
     public String toString() {
         return "Jugador{" + "nombre=" + nombre + ", turno=" + turno + ", misRaciones=" + misRaciones.toString() + ", tieneGusano=" + tieneGusano + '}';

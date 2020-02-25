@@ -6,7 +6,8 @@
 package carlos.pikopiko;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -17,13 +18,13 @@ public class Parrilla {
     // Una parrilla es una tabla donde hacemos corresponder el valor 
     // del dado con la ficha. Esto permite ordenar la parrilla por valor, que
     // además no se puede repetir.
-    private Map<Integer, Racion> lista;
+    private SortedMap<Integer, Racion> lista;
     public static final int NUMERO_RACIONES = 16;
     public static final int VALOR_RACION_INICIAL = 21;
 
     // Construye el map con las raciones
     public Parrilla() {
-        lista = new HashMap<>(NUMERO_RACIONES);
+        lista = new TreeMap<>();
         rellenarParrilla();
     }
 
@@ -46,11 +47,56 @@ public class Parrilla {
         lista.put(Racion.R36.getValor(), Racion.R36);
     }
 
-    public Racion getRacionParrilla(Integer i){
+    public Racion getRacionParrilla(Integer i) {
         return lista.get(i);
     }
-    
-    public boolean buscarRacion(Racion r){
+
+    public boolean buscarRacion(Racion r) {
         return lista.containsValue(r);
+    }
+
+    public Racion getRacionMayor() {
+        return lista.get(lista.lastKey());
+    }
+
+    public void borrarRacion(Integer valorRacion) {
+        lista.remove(valorRacion);
+    }
+
+    public void devolverRacion(Racion r) {
+        if (!lista.containsKey(r.getValor())) {
+            lista.put(r.getValor(), r);
+            Racion mayor = this.getRacionMayor();
+            if (r != mayor) {
+                this.borrarRacion(mayor.getValor());
+            }
+        }
+    }
+
+    public void imprimir() {
+        for (Racion r : lista.values()) {
+            System.out.println(r);
+        }
+    }
+
+    public static void main(String[] args) {
+        Parrilla p = new Parrilla();
+        p.imprimir();
+        System.out.println("Racion mayor " + p.getRacionMayor());
+        System.out.println("Racion 22 " + p.getRacionParrilla(22));
+        p.borrarRacion(36);
+        p.borrarRacion(36);
+        p.borrarRacion(35);
+        p.borrarRacion(22);
+        p.borrarRacion(29);
+        p.imprimir();
+        System.out.println("Racion mayor " + p.getRacionMayor());
+        System.out.println("Existe 22 " + p.buscarRacion(Racion.R22));
+        System.out.println("Existe 36 " + p.buscarRacion(Racion.R36));
+        p.devolverRacion(Racion.R22);
+        p.devolverRacion(Racion.R22);
+        p.borrarRacion(33);
+        p.devolverRacion(Racion.R29);
+        p.imprimir();
     }
 }
