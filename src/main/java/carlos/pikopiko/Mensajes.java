@@ -73,4 +73,13 @@ public class Mensajes {
         this.mensaje.setText("Ya no quedan dados por tirar.\n "
                 + "Ahora debes coger una ración, robar o bien terminar tu turno");
     }
+    
+    public void racionNoExisteEnParrilla(){
+        this.mensaje.setText("La ración no existe en la parrilla. Prueba a robarla " 
+                + "o a coger una de menor valor");
+    }
+    
+    public void informarTurno(String nombreJugador){
+        this.mensaje.setText("SE CAMBIA EL TURNO AL JUGADOR: " + nombreJugador);
+    }
 }
