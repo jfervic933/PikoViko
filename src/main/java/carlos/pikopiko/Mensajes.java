@@ -55,7 +55,7 @@ public class Mensajes {
     }
 
     public void noPuedeCogerRacion() {
-        this.mensaje.setText("Con ese valor de dados no puedes coger"
+        this.mensaje.setText("Sin al menos un dado de gusano no puedes coger"
                 + " ninguna ración de gusanos");
     }
 

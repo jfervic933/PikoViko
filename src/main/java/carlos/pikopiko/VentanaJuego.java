@@ -940,13 +940,12 @@ public class VentanaJuego extends javax.swing.JFrame {
             // O PUEDE QUE EL JUGADOR SE HAYA PLANTADO Y TENGA QUE COGER LA
             // RACION DE MENOR VALOR DISPONIBLE
             // El jugador coge la ración y la pone en su pila
-            if (jugadorAux.cogerRacion(PARRILLA, PARRILLA.getRacionParrilla(jugadorAux.getValorSeleccionados()))) {
+            if (jugadorAux.cogerRacion(PARRILLA)) {
                 // Imprimo las raciones que tiene el jugador
                 System.out.println("COGER RACION - LISTA DE JUGADORES - JUSTO DESPUES DE COGERLA");
                 gestorTurnos.getListaJugadores().forEach(System.out::println);
-                // AQUI SE DEBE DESHABILITAR LA ULTIMA QUE TENGA EL JUGADOR - CUIDADO
-// Se deshabilita el jlabel de la ración cogida -OJO CORREGIR ESTO -
-                int valorJLabel = jugadorAux.getValorSeleccionados() % Parrilla.VALOR_RACION_INICIAL;
+                // Se deshabilita en la parrilla la ultima cogida
+                int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor()% Parrilla.VALOR_RACION_INICIAL;
                 LISTA_RACIONES.get(valorJLabel).setEnabled(false);
 
                 // Se pone la última ración del jugador en JLabel de sus raciones
