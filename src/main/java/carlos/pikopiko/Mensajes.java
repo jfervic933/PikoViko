@@ -82,4 +82,8 @@ public class Mensajes {
     public void informarTurno(String nombreJugador){
         this.mensaje.setText("SE CAMBIA EL TURNO AL JUGADOR: " + nombreJugador);
     }
+    
+    public void noSePuedeRobarEsaRacion(){
+        this.mensaje.setText("No se puede robar esa ración a ningún jugador");
+    }
 }
