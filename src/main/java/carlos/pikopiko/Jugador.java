@@ -217,9 +217,14 @@ public class Jugador {
     }
 
     public boolean devolverRacion(Parrilla parrilla) {
+        // Saca la última ración que tiene el jugador
         Racion racion = this.getMisRaciones().sacarRacion();
-        parrilla.devolverRacion(racion);
-        return true;
+        if (racion!=null){
+            parrilla.devolverRacion(racion);
+            return true;
+        }
+        
+        return false;
     }
 
     public boolean existeRacionEnParrilla(int valorBuscar, Parrilla parrilla) {
