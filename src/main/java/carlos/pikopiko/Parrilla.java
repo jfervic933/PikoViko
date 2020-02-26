@@ -65,6 +65,9 @@ public class Parrilla {
         lista.remove(valorRacion);
     }
 
+    public void borrarRacion(Racion racion){
+        lista.remove(racion.getValor());
+    }
     // Pone la ración en la parrilla, si no existe
     // En caso de no ser la de mayor valor, retira
     // la ración de mayor valor
