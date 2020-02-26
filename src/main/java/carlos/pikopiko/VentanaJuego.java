@@ -9,8 +9,6 @@ import javax.swing.JOptionPane;
 // Cosas por arreglar: 
 // Al coger racion que coja la correcta porque si coge una menor no sombrea
 // el jlabel
-// Perfilar el tema de las tiradas fallidas. Que comprueba cuantos dados quedan
-// libres y lo que ha salido para que no deje tirar y deshabilite botones
 /**
  *
  * @author jcarlosvico@maralboran.es
@@ -219,6 +217,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         jButtonCogerRacion = new javax.swing.JButton();
         jButtonRobar = new javax.swing.JButton();
         jButtonDevolverRacion = new javax.swing.JButton();
+        jButtonCogerRacionMenor = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -481,22 +480,21 @@ public class VentanaJuego extends javax.swing.JFrame {
             }
         });
 
+        jButtonCogerRacionMenor.setText("Coger ración  menor");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(22, 22, 22)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonTerminarTurno)
+                    .addComponent(jButtonRobar)
+                    .addComponent(jButtonCogerRacion)
                     .addComponent(jButtonDevolverRacion)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButtonTerminarTurno)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButtonRobar)
-                                .addComponent(jButtonCogerRacion)))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jButtonCogerRacionMenor))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -505,11 +503,13 @@ public class VentanaJuego extends javax.swing.JFrame {
                 .addComponent(jButtonTerminarTurno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonCogerRacion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonCogerRacionMenor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRobar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonDevolverRacion)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -936,14 +936,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         if (jugadorAux.tieneGusano()) {
 
-            // AQUI HAY QUE CONTROLAR QUE COINCIDA EXACTAMENTE CON UNA RACION DE LA PARRILLA
-            // O PUEDE QUE EL JUGADOR SE HAYA PLANTADO Y TENGA QUE COGER LA
-            // RACION DE MENOR VALOR DISPONIBLE
             // El jugador coge la ración y la pone en su pila
             if (jugadorAux.cogerRacion(PARRILLA)) {
-                // Imprimo las raciones que tiene el jugador
-                System.out.println("COGER RACION - LISTA DE JUGADORES - JUSTO DESPUES DE COGERLA");
-                gestorTurnos.getListaJugadores().forEach(System.out::println);
+                
                 // Se deshabilita en la parrilla la ultima cogida
                 int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor()% Parrilla.VALOR_RACION_INICIAL;
                 LISTA_RACIONES.get(valorJLabel).setEnabled(false);
@@ -954,16 +949,15 @@ public class VentanaJuego extends javax.swing.JFrame {
                 // Ahora el jugador tiene que terminar el turno
                 gestorTurnos.pasarSiguiente();
 
+                // Se reinician los componentes gráficos
                 reiniciarJLabelDados();
                 reiniciarListaCheck();
                 this.lanzarDados.setEnabled(true);
                 this.seleccDados.setEnabled(false);
-                jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
                 reiniciarJLabelValorAcumulado();
-                System.out.println("DESPUES COGER UNA RACION - LISTA DE JUGADORES -");
-                gestorTurnos.getListaJugadores().forEach(System.out::println);
+                mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
             } else {
-                jTextArea1.setText("Imposible coger ración");
+                mensaje.racionNoExisteEnParrilla();
             }
 
         } else {
@@ -1211,6 +1205,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCogerRacion;
+    private javax.swing.JButton jButtonCogerRacionMenor;
     private javax.swing.JButton jButtonDevolverRacion;
     private javax.swing.JButton jButtonRobar;
     private javax.swing.JButton jButtonTerminarTurno;
