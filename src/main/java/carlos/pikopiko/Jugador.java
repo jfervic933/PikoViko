@@ -1,5 +1,7 @@
 package carlos.pikopiko;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jcarlosvico@maralboran.es
@@ -132,6 +134,37 @@ public class Jugador {
         }
     }
 
+    public boolean robarRacion(TurnoJugadores turno) {
+        // Obtengo el valor de dados seleccionados del jugador
+        int valorSeleccionados = this.getValorSeleccionados();
+        // Si es un valor válido
+        if (valorSeleccionados >= Parrilla.VALOR_RACION_INICIAL
+                && valorSeleccionados < Parrilla.VALOR_RACION_INICIAL + Parrilla.NUMERO_RACIONES) {
+
+            ArrayList<Jugador> listaJugadores = turno.getListaJugadores();
+            // Recorre la lista de jugadores buscando otros jugadores que 
+            // puedan tener la ración
+            for (Jugador j : listaJugadores) {
+                if (j != this) {
+                    Racion aux = j.getMisRaciones().consultarUltimaRacion();
+                    // Se puede robar
+                    if (aux.getValor() == valorSeleccionados) {
+                        // Se la quito al jugador que la tiene
+                        j.getMisRaciones().sacarRacion();
+                        // Se la pongo al jugador que le toca
+                        this.misRaciones.ponerRacion(aux);
+                        System.out.println("El jugador " + this.nombre + " roba la racion \n"
+                                + " a " + j.getNombre());
+                        return true;
+                    }
+                }
+
+            }
+            return false;
+        }
+        return false;
+    }
+
     // El jugador guarda en su pila de raciones la Racion 
     // que indique la suma de sus dados. Si la ración no existe en la 
     // parrilla entonces puede ser que pueda robarla o coger una de menor valor
@@ -151,14 +184,14 @@ public class Jugador {
                 parrilla.borrarRacion(aux);
                 // La pongo no disponible
                 //aux.ocultarRacion();
-                System.out.println("El jugador " + this.nombre + " coge la racion "+
-                        aux.name());
+                System.out.println("El jugador " + this.nombre + " coge la racion "
+                        + aux.name());
                 return true;
             } else {
                 // No existe en la parrilla
                 // B - Busco en los jugadores
                 System.out.println("Esa racion no existe en la parrilla" + valorSeleccionados);
-                
+
             }
 
             // Recorro todas las raciones posibles desde la que tenga el valor
