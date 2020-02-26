@@ -991,12 +991,22 @@ public class VentanaJuego extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonTerminarTurnoActionPerformed
 
     private void jButtonDevolverRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDevolverRacionActionPerformed
-        System.out.println("Devolver Racion");
+        // Obtiene el jugador que tiene el turno
         Jugador jugador = gestorTurnos.getJugadorTurno();
+        // Saca la última ración que tiene ese jugador
         Racion ultima = jugador.getMisRaciones().sacarRacion();
-        System.out.println("El jugador debe devolver " + ultima);
-        System.out.println("DESPUES sacar UNA RACION - LISTA DE JUGADORES -");
-        gestorTurnos.getListaJugadores().forEach(System.out::println);
+        // Se pone esa ración en la parrilla
+        PARRILLA.devolverRacion(ultima);
+        // Se colocan los JLabel correctamente
+        // Se deshabilita en la parrilla la ultima cogida
+        int valorJLabel = ultima.getValor() % Parrilla.VALOR_RACION_INICIAL;
+        LISTA_RACIONES.get(valorJLabel).setEnabled(true);
+        // Actualiza el jlabel del jugador
+        establecerRacionJugadorJLabel(jugador);
+
+        //System.out.println("El jugador debe devolver " + ultima);
+//        System.out.println("DESPUES sacar UNA RACION - LISTA DE JUGADORES -");
+//        gestorTurnos.getListaJugadores().forEach(System.out::println);
         gestorTurnos.pasarSiguiente();
         reiniciarJLabelDados();
         reiniciarListaCheck();
