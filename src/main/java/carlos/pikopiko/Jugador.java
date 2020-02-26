@@ -39,17 +39,17 @@ public class Jugador {
             }
         }
     }
-        
+
     // Miro si en la tirada he sacado valores que ya estaban bloqueados
     // entonces tirada fallida
-    public boolean tiradaFallida(){
+    public boolean tiradaFallida() {
         int contador = 0;
         for (Dado aux : tiradaDados) {
             if (!aux.isBloqueado()) {
-                for (Dado aux2: tiradaDados){
-                    if (aux!=aux2 && 
-                        aux2.isBloqueado() &&
-                        aux.getCaraSeleccionada() == aux2.getCaraSeleccionada()){
+                for (Dado aux2 : tiradaDados) {
+                    if (aux != aux2
+                            && aux2.isBloqueado()
+                            && aux.getCaraSeleccionada() == aux2.getCaraSeleccionada()) {
                         contador++;
                         break;
                     }
@@ -61,6 +61,7 @@ public class Jugador {
         // True si la tirada es fallida
         return (contador == contadorNoBloqueados);
     }
+
     // Selecciona ese dado y lo bloquea
     public void seleccionarDado(int numeroDado) {
         tiradaDados[numeroDado].bloquear();
@@ -133,38 +134,63 @@ public class Jugador {
 
     // El jugador guarda en su pila de raciones la Racion 
     // especificada en r de la parrilla de raciones
-    public boolean cogerRacion(Parrilla parrilla, Racion r) {
+    public boolean cogerRacion(Parrilla parrilla) {
         // Obtengo el valor de dados seleccionados del jugador
         int valorSeleccionados = this.getValorSeleccionados();
         // Si es un valor válido
-        if (valorSeleccionados >= 21 && valorSeleccionados <= 36) {
+        if (valorSeleccionados >= Parrilla.VALOR_RACION_INICIAL
+                && valorSeleccionados < Parrilla.VALOR_RACION_INICIAL + Parrilla.NUMERO_RACIONES) {
+
+            // A - Busco en la parrilla si está esa ración
+            if (this.existeRacionEnParrilla(valorSeleccionados, parrilla)) { //Existe
+                Racion aux = parrilla.getRacionParrilla(valorSeleccionados);
+                // Guardo la ración en la pila del jugador
+                this.misRaciones.ponerRacion(aux);
+                // Se elimina de la parrilla
+                parrilla.borrarRacion(aux);
+                // La pongo no disponible
+                //aux.ocultarRacion();
+                System.out.println("El jugador " + this.nombre + " coge la racion "+
+                        aux.name());
+                return true;
+            } else {
+                // No existe en la parrilla
+                // B - Busco en los jugadores
+                System.out.println("Esa racion no existe en la parrilla" + valorSeleccionados);
+            }
+
             // Recorro todas las raciones posibles desde la que tenga el valor
             // seleccionado hasta la primera, porque puede que el jugador
             // se haya plantado con un valor que no está disponible pero
             // alguna ración anterior si que lo puede estar
-            for (int i = valorSeleccionados; i >= Parrilla.VALOR_RACION_INICIAL; i--) {
-                // Compruebo que esa ración está en la parrilla
-                Racion aux = parrilla.getRacionParrilla(i);
-                // Si la ración no es null significa que existe en la parrilla
-                if (aux != null) {
-                    if (aux.isDisponible()) { // La ración se puede coger
-                        // Guardo la ración en la pila del jugador
-                        this.misRaciones.ponerRacion(aux);
-                        // La pongo no disponible
-                        aux.ocultarRacion();
-                        return true;
-                    }
-                }
-            }
+//            for (int i = valorSeleccionados; i >= Parrilla.VALOR_RACION_INICIAL; i--) {
+//                // Compruebo que esa ración está en la parrilla
+//                Racion aux = parrilla.getRacionParrilla(i);
+//                // Si la ración no es null significa que existe en la parrilla
+//                if (aux != null) {
+//                    if (aux.isDisponible()) { // La ración se puede coger
+//                        // Guardo la ración en la pila del jugador
+//                        this.misRaciones.ponerRacion(aux);
+//                        // La pongo no disponible
+//                        aux.ocultarRacion();
+//                        return true;
+//                    }
+//                }
+//            }
         }
         return false;
     }
 
-    public boolean devolverRacion(Parrilla parrilla){
+    public boolean devolverRacion(Parrilla parrilla) {
         Racion racion = this.getMisRaciones().sacarRacion();
         parrilla.devolverRacion(racion);
         return true;
     }
+
+    public boolean existeRacionEnParrilla(int valorBuscar, Parrilla parrilla) {
+        return parrilla.existeRacion(valorBuscar);
+    }
+
     @Override
     public String toString() {
         return "Jugador{" + "nombre=" + nombre + ", turno=" + turno + ", misRaciones=" + misRaciones.toString() + ", tieneGusano=" + tieneGusano + '}';
