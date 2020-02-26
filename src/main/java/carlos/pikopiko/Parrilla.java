@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package carlos.pikopiko;
 
-import java.util.HashMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
  *
- * @author jcarlosvico
+ * @author jcarlosvico@maralboran.es
  */
 public class Parrilla {
 
@@ -22,7 +16,8 @@ public class Parrilla {
     public static final int NUMERO_RACIONES = 16;
     public static final int VALOR_RACION_INICIAL = 21;
 
-    // Construye el map con las raciones
+    // Construye el map con las raciones. Se usa TreeMap que permite 
+    // mantener la parrilla ordenada por key
     public Parrilla() {
         lista = new TreeMap<>();
         rellenarParrilla();
@@ -51,18 +46,28 @@ public class Parrilla {
         return lista.get(i);
     }
 
-    public boolean buscarRacion(Racion r) {
+    public boolean existeRacion(Racion r) {
         return lista.containsValue(r);
+    }
+
+    public boolean existeRacion(Integer i) {
+        Racion aux = lista.get(i);
+        return aux != null;
     }
 
     public Racion getRacionMayor() {
         return lista.get(lista.lastKey());
     }
 
+    // Saca la ración de la parrilla, si existe la key valorRacion
+    // En caso de no existir no hace nada
     public void borrarRacion(Integer valorRacion) {
         lista.remove(valorRacion);
     }
 
+    // Pone la ración en la parrilla, si no existe
+    // En caso de no ser la de mayor valor, retira
+    // la ración de mayor valor
     public void devolverRacion(Racion r) {
         if (!lista.containsKey(r.getValor())) {
             lista.put(r.getValor(), r);
@@ -73,30 +78,33 @@ public class Parrilla {
         }
     }
 
-    public void imprimir() {
+    private void imprimir() {
         for (Racion r : lista.values()) {
             System.out.println(r);
         }
     }
 
-    public static void main(String[] args) {
-        Parrilla p = new Parrilla();
-        p.imprimir();
-        System.out.println("Racion mayor " + p.getRacionMayor());
-        System.out.println("Racion 22 " + p.getRacionParrilla(22));
-        p.borrarRacion(36);
-        p.borrarRacion(36);
-        p.borrarRacion(35);
-        p.borrarRacion(22);
-        p.borrarRacion(29);
-        p.imprimir();
-        System.out.println("Racion mayor " + p.getRacionMayor());
-        System.out.println("Existe 22 " + p.buscarRacion(Racion.R22));
-        System.out.println("Existe 36 " + p.buscarRacion(Racion.R36));
-        p.devolverRacion(Racion.R22);
-        p.devolverRacion(Racion.R22);
-        p.borrarRacion(33);
-        p.devolverRacion(Racion.R29);
-        p.imprimir();
-    }
+//    public static void main(String[] args) {
+//        Parrilla p = new Parrilla();
+//        p.imprimir();
+//        System.out.println("Racion mayor " + p.getRacionMayor());
+//        System.out.println("Racion 22 " + p.getRacionParrilla(22));
+//        p.borrarRacion(36);
+//        p.borrarRacion(36);
+//        p.borrarRacion(35);
+//        p.borrarRacion(22);
+//        p.borrarRacion(29);
+//        p.imprimir();
+//        System.out.println("Racion mayor " + p.getRacionMayor());
+//        System.out.println("Existe 22 " + p.existeRacion(Racion.R22));
+//        System.out.println("Existe 36 " + p.existeRacion(Racion.R36));
+//        p.devolverRacion(Racion.R22);
+//        p.devolverRacion(Racion.R22);
+//        p.borrarRacion(33);
+//        p.devolverRacion(Racion.R29);
+//        p.imprimir();
+//        System.out.println("Existe 29 " + p.existeRacion(29));
+//        System.out.println("Existe 21 " + p.existeRacion(21));
+//        System.out.println("Existe 36 " + p.existeRacion(36));
+//    }
 }
