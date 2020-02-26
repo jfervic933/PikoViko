@@ -138,7 +138,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
             // CASO D. Que seleccione un dado simple habiendo parejas o tríos
             // disponibles, a menos que sea gusano
-            if (lista.size() == 1 && valorDado != 6){
+            if (lista.size() == 1 && valorDado != 6) {
                 int[] numeroCaras = VentanaJuego.contadorCaras(aux);
                 for (int i : numeroCaras) {
                     if (i > 1) {
@@ -472,6 +472,11 @@ public class VentanaJuego extends javax.swing.JFrame {
         });
 
         jButtonRobar.setText("Robar ración");
+        jButtonRobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRobarActionPerformed(evt);
+            }
+        });
 
         jButtonDevolverRacion.setText("Devolver ración");
         jButtonDevolverRacion.addActionListener(new java.awt.event.ActionListener() {
@@ -938,9 +943,9 @@ public class VentanaJuego extends javax.swing.JFrame {
 
             // El jugador coge la ración y la pone en su pila
             if (jugadorAux.cogerRacion(PARRILLA)) {
-                
+
                 // Se deshabilita en la parrilla la ultima cogida
-                int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor()% Parrilla.VALOR_RACION_INICIAL;
+                int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor() % Parrilla.VALOR_RACION_INICIAL;
                 LISTA_RACIONES.get(valorJLabel).setEnabled(false);
 
                 // Se pone la última ración del jugador en JLabel de sus raciones
@@ -1002,10 +1007,42 @@ public class VentanaJuego extends javax.swing.JFrame {
         this.jButtonRobar.setEnabled(true);
     }//GEN-LAST:event_jButtonDevolverRacionActionPerformed
 
+    private void jButtonRobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobarActionPerformed
+        // Selecciona al jugador que le toca
+        Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
+
+        if (jugadorAux.tieneGusano()) {
+
+            // El jugador roba la ración y la pone en su pila
+            if (jugadorAux.robarRacion(gestorTurnos)) {
+                for (Jugador j : gestorTurnos.getListaJugadores()) {
+                    // Se pone la última ración del jugador en JLabel de sus raciones
+                    establecerRacionJugadorJLabel(j);
+                }
+
+                // Ahora el jugador tiene que terminar el turno
+                gestorTurnos.pasarSiguiente();
+
+                // Se reinician los componentes gráficos
+                reiniciarJLabelDados();
+                reiniciarListaCheck();
+                this.lanzarDados.setEnabled(true);
+                this.seleccDados.setEnabled(false);
+                reiniciarJLabelValorAcumulado();
+                mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
+            } else {
+                mensaje.noSePuedeRobarEsaRacion();
+            }
+
+        } else {
+            mensaje.noPuedeCogerRacion();
+        }
+
+    }//GEN-LAST:event_jButtonRobarActionPerformed
+
     // Este método cuenta las veces que sale cada cara y lo devuelve en 
     // un array de seis posiciones (0 - cara 1, 1 - cara 2,etc)
     // No cuenta la cara si el dado está bloqueado
-   
     private static int[] contadorCaras(Jugador aux) {
         int[] array = new int[6];
         Dado[] tiradas = aux.getTiradaDados();
@@ -1048,7 +1085,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         return false;
     }
 
-    public void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux) {
+    private void mostrarValorAcumuladoDadosJugadorJLabel(int ordenJugador, Jugador aux) {
         int valorDadosSeleccionados = aux.getValorSeleccionados();
         switch (ordenJugador) {
             case 0:
@@ -1279,5 +1316,4 @@ public class VentanaJuego extends javax.swing.JFrame {
     private javax.swing.JButton lanzarDados;
     private javax.swing.JButton seleccDados;
     // End of variables declaration//GEN-END:variables
-
 }
