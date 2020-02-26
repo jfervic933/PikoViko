@@ -917,7 +917,11 @@ public class VentanaJuego extends javax.swing.JFrame {
     private void establecerRacionJugadorJLabel(Jugador jugador) {
         // Esto devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
         int ordenJugador = gestorTurnos.getOrdenJugador();
-        ImageIcon imagen = jugador.getMisRaciones().consultarUltimaRacion().getImagen();
+        Racion r = jugador.getMisRaciones().consultarUltimaRacion();
+        ImageIcon imagen = null;
+        if (r!=null){
+            imagen = r.getImagen();
+        }
         switch (ordenJugador) {
             case 0:
                 this.jLabel42.setIcon(imagen);
