@@ -133,7 +133,8 @@ public class Jugador {
     }
 
     // El jugador guarda en su pila de raciones la Racion 
-    // especificada en r de la parrilla de raciones
+    // que indique la suma de sus dados. Si la ración no existe en la 
+    // parrilla entonces puede ser que pueda robarla o coger una de menor valor
     public boolean cogerRacion(Parrilla parrilla) {
         // Obtengo el valor de dados seleccionados del jugador
         int valorSeleccionados = this.getValorSeleccionados();
@@ -157,6 +158,7 @@ public class Jugador {
                 // No existe en la parrilla
                 // B - Busco en los jugadores
                 System.out.println("Esa racion no existe en la parrilla" + valorSeleccionados);
+                
             }
 
             // Recorro todas las raciones posibles desde la que tenga el valor
