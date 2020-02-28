@@ -854,8 +854,9 @@ public class VentanaJuego extends javax.swing.JFrame {
             mensaje.tiradaFallida();
             // Deshabilita boton de selección de dados
             this.seleccDados.setEnabled(false);
-            // Deshabilita boton de coger y robar
+            // Deshabilita boton de coger, coger menor y robar
             this.jButtonCogerRacion.setEnabled(false);
+            this.jButtonCogerRacionMenor.setEnabled(false);
             this.jButtonRobar.setEnabled(false);
             // Habilita / Deshabilita el terminar turno y devolver ración
             if (jugadorAux.getMisRaciones().estaVacia()) {
@@ -918,8 +919,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         // Esto devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
         int ordenJugador = gestorTurnos.getOrdenJugador();
         Racion r = jugador.getMisRaciones().consultarUltimaRacion();
-        ImageIcon imagen = null;
-        if (r!=null){
+        ImageIcon imagen = new ImageIcon("resources/caragusano.png");
+        if (r != null) {
             imagen = r.getImagen();
         }
         switch (ordenJugador) {
@@ -942,55 +943,63 @@ public class VentanaJuego extends javax.swing.JFrame {
 
         // Selecciona al jugador que le toca
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
+        if (jugadorAux.getValorSeleccionados() >= 21 && jugadorAux.getValorSeleccionados() <= 36) {
+            if (jugadorAux.tieneGusano()) {
 
-        if (jugadorAux.tieneGusano()) {
+                // El jugador coge la ración y la pone en su pila
+                if (jugadorAux.cogerRacion(PARRILLA)) {
 
-            // El jugador coge la ración y la pone en su pila
-            if (jugadorAux.cogerRacion(PARRILLA)) {
+                    // Se deshabilita en la parrilla la ultima cogida
+                    int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor() % Parrilla.VALOR_RACION_INICIAL;
+                    LISTA_RACIONES.get(valorJLabel).setEnabled(false);
 
-                // Se deshabilita en la parrilla la ultima cogida
-                int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor() % Parrilla.VALOR_RACION_INICIAL;
-                LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+                    // Se pone la última ración del jugador en JLabel de sus raciones
+                    establecerRacionJugadorJLabel(jugadorAux);
 
-                // Se pone la última ración del jugador en JLabel de sus raciones
-                establecerRacionJugadorJLabel(jugadorAux);
+                    // Ahora el jugador tiene que terminar el turno
+                    gestorTurnos.pasarSiguiente();
 
-                // Ahora el jugador tiene que terminar el turno
-                gestorTurnos.pasarSiguiente();
+                    // Se reinician los componentes gráficos
+                    reiniciarJLabelDados();
+                    reiniciarListaCheck();
+                    this.lanzarDados.setEnabled(true);
+                    this.seleccDados.setEnabled(false);
+                    reiniciarJLabelValorAcumulado();
+                    mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
+                } else {
+                    mensaje.racionNoExisteEnParrilla();
+                }
 
-                // Se reinician los componentes gráficos
-                reiniciarJLabelDados();
-                reiniciarListaCheck();
-                this.lanzarDados.setEnabled(true);
-                this.seleccDados.setEnabled(false);
-                reiniciarJLabelValorAcumulado();
-                mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
             } else {
-                mensaje.racionNoExisteEnParrilla();
+                mensaje.noPuedeCogerRacion();
             }
-
         } else {
-            mensaje.noPuedeCogerRacion();
+            this.jTextArea1.setText("Con ese valor de dados no se puede coger ninguna ración");
         }
+
 
     }//GEN-LAST:event_jButtonCogerRacionActionPerformed
 
     private void jButtonTerminarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTerminarTurnoActionPerformed
         Jugador jugador = gestorTurnos.getJugadorTurno();
-        System.out.println("Numero de raciones en la pila de " + jugador.getNombre() + " -- "
-                + jugador.getMisRaciones().numeroRaciones());
+
         if (jugador.getMisRaciones().numeroRaciones() > 0) {
             jTextArea1.setText("Debes devolver una ración");
-        } else {
+        } else if (jugador.todosBloqueados() || jugador.tiradaFallida()) {
+            // Permitir pasar el turno sin devolver ración porque no tiene
             gestorTurnos.pasarSiguiente();
             reiniciarJLabelDados();
             reiniciarListaCheck();
+            reiniciarJLabelValorAcumulado();
             this.lanzarDados.setEnabled(true);
             this.seleccDados.setEnabled(false);
             this.jButtonCogerRacion.setEnabled(true);
+            this.jButtonCogerRacionMenor.setEnabled(true);
             this.jButtonDevolverRacion.setEnabled(true);
             this.jButtonRobar.setEnabled(true);
             jTextArea1.setText("Turno de: " + gestorTurnos.getJugadorTurno().getNombre());
+        } else {
+            jTextArea1.setText("Aún te quedan dados en juego. Sigue tirando");
         }
     }//GEN-LAST:event_jButtonTerminarTurnoActionPerformed
 
@@ -1000,25 +1009,39 @@ public class VentanaJuego extends javax.swing.JFrame {
         // Saca la última ración que tiene ese jugador
         Racion ultima = jugador.getMisRaciones().sacarRacion();
         // Se pone esa ración en la parrilla
-        PARRILLA.devolverRacion(ultima);
-        // Se colocan los JLabel correctamente
-        // Se deshabilita en la parrilla la ultima cogida
-        int valorJLabel = ultima.getValor() % Parrilla.VALOR_RACION_INICIAL;
-        LISTA_RACIONES.get(valorJLabel).setEnabled(true);
-        // Actualiza el jlabel del jugador
-        establecerRacionJugadorJLabel(jugador);
+        if (ultima != null) {
+            Racion quitarParrilla = PARRILLA.devolverRacion(ultima);
+            // Se colocan los JLabel correctamente
+            // Se deshabilita en la parrilla la ultima cogida
+            int valorJLabel = ultima.getValor() % Parrilla.VALOR_RACION_INICIAL;
+            LISTA_RACIONES.get(valorJLabel).setEnabled(true);
+            if (quitarParrilla != null) { // Hay que deshabilitar esa racion en los JLabel
+                valorJLabel = quitarParrilla.getValor() % Parrilla.VALOR_RACION_INICIAL;
+                LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+            }
 
-        //System.out.println("El jugador debe devolver " + ultima);
+            // Actualiza el jlabel del jugador
+            establecerRacionJugadorJLabel(jugador);
+
+            //System.out.println("El jugador debe devolver " + ultima);
 //        System.out.println("DESPUES sacar UNA RACION - LISTA DE JUGADORES -");
 //        gestorTurnos.getListaJugadores().forEach(System.out::println);
-        gestorTurnos.pasarSiguiente();
-        reiniciarJLabelDados();
-        reiniciarListaCheck();
-        this.lanzarDados.setEnabled(true);
-        this.seleccDados.setEnabled(false);
-        this.jButtonCogerRacion.setEnabled(true);
-        this.jButtonDevolverRacion.setEnabled(true);
-        this.jButtonRobar.setEnabled(true);
+            gestorTurnos.pasarSiguiente();
+            reiniciarJLabelDados();
+            reiniciarListaCheck();
+            reiniciarJLabelValorAcumulado();
+            this.lanzarDados.setEnabled(true);
+            this.seleccDados.setEnabled(false);
+            this.jButtonCogerRacion.setEnabled(true);
+            this.jButtonCogerRacionMenor.setEnabled(true);
+            this.jButtonDevolverRacion.setEnabled(true);
+            this.jButtonTerminarTurno.setEnabled(true);
+            this.jButtonRobar.setEnabled(true);
+            this.jTextArea1.setText("TURNO DEL JUGADOR: " + gestorTurnos.getJugadorTurno().getNombre());
+        } else {
+            this.jTextArea1.setText("No tienes raciones para devolver");
+        }
+
     }//GEN-LAST:event_jButtonDevolverRacionActionPerformed
 
     private void jButtonRobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobarActionPerformed

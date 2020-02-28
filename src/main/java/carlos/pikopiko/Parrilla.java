@@ -70,15 +70,17 @@ public class Parrilla {
     }
     // Pone la ración en la parrilla, si no existe
     // En caso de no ser la de mayor valor, retira
-    // la ración de mayor valor
-    public void devolverRacion(Racion r) {
+    // la ración de mayor valor y devuelve la racion mayor
+    public Racion devolverRacion(Racion r) {
         if (!lista.containsKey(r.getValor())) {
             lista.put(r.getValor(), r);
             Racion mayor = this.getRacionMayor();
             if (r != mayor) {
                 this.borrarRacion(mayor.getValor());
+                return mayor;
             }
         }
+        return null;
     }
 
     private void imprimir() {

@@ -23,6 +23,7 @@ public class PilaRaciones {
         if (!pila.isEmpty()){
             return pila.remove(pila.size()-1);
         }
+        
         return null;
     }
     public int numeroRaciones(){

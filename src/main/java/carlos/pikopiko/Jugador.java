@@ -148,12 +148,16 @@ public class Jugador {
                 if (j != this) {
                     Racion aux = j.getMisRaciones().consultarUltimaRacion();
                     // Se puede robar
-                    if (aux.getValor() == valorSeleccionados) {
+                    if (aux!=null && aux.getValor() == valorSeleccionados) {
                         // Se la quito al jugador que la tiene
                         j.getMisRaciones().sacarRacion();
+                        System.out.println("RACIONES DE " + j.getNombre() + " DESPUES DE ROBAR");
+                        j.getMisRaciones().imprimirRaciones();
                         // Se la pongo al jugador que le toca
                         this.misRaciones.ponerRacion(aux);
-                        System.out.println("El jugador " + this.nombre + " roba la racion \n"
+                        System.out.println("RACIONES DE " + this.getNombre() + " DESPUES DE ROBAR");
+                        this.getMisRaciones().imprimirRaciones();
+                        System.out.println("El jugador " + this.nombre + " roba la racion"
                                 + " a " + j.getNombre());
                         return true;
                     }
@@ -216,15 +220,14 @@ public class Jugador {
         return false;
     }
 
-    public boolean devolverRacion(Parrilla parrilla) {
+    public Racion devolverRacion(Parrilla parrilla) {
         // Saca la última ración que tiene el jugador
         Racion racion = this.getMisRaciones().sacarRacion();
-        if (racion!=null){
-            parrilla.devolverRacion(racion);
-            return true;
+        if (racion != null) {
+            return parrilla.devolverRacion(racion);
+
         }
-        
-        return false;
+        return null;
     }
 
     public boolean existeRacionEnParrilla(int valorBuscar, Parrilla parrilla) {
