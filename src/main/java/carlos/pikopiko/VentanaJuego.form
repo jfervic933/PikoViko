@@ -500,6 +500,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Coger raci&#xf3;n  menor"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCogerRacionMenorActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

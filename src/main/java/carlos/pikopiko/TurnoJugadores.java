@@ -32,8 +32,13 @@ public class TurnoJugadores {
         return this.listaJugadores.get(turnoJugador);
     }
     
-    public int getOrdenJugador(){
-        return turnoJugador;
+    public int getOrdenJugador(Jugador aux){
+        for(int i = 0; i<listaJugadores.size();i++){
+            if (listaJugadores.get(i) == aux){
+                return i;
+            }
+        }
+        return -1;
     }
     
     public void pasarSiguiente(){

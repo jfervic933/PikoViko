@@ -486,6 +486,11 @@ public class VentanaJuego extends javax.swing.JFrame {
         });
 
         jButtonCogerRacionMenor.setText("Coger ración  menor");
+        jButtonCogerRacionMenor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCogerRacionMenorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -912,15 +917,19 @@ public class VentanaJuego extends javax.swing.JFrame {
             this.seleccDados.setEnabled(false);
         }
         // Mostrar valor acumulado en el jlabel correspondiente
-        mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(), gestorTurnos.getJugadorTurno());
+        mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(gestorTurnos.getJugadorTurno()), gestorTurnos.getJugadorTurno());
     }//GEN-LAST:event_seleccDadosActionPerformed
 
     private void establecerRacionJugadorJLabel(Jugador jugador) {
         // Esto devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
-        int ordenJugador = gestorTurnos.getOrdenJugador();
+
+        int ordenJugador = gestorTurnos.getOrdenJugador(jugador);
+        System.out.println("Estableciendo JLabel jugador " + jugador.getNombre());
         Racion r = jugador.getMisRaciones().consultarUltimaRacion();
+
         ImageIcon imagen = new ImageIcon("resources/caragusano.png");
         if (r != null) {
+            System.out.println("La ración a poner es " + r.name());
             imagen = r.getImagen();
         }
         switch (ordenJugador) {
@@ -966,6 +975,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                     this.seleccDados.setEnabled(false);
                     reiniciarJLabelValorAcumulado();
                     mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
+                    gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
                 } else {
                     mensaje.racionNoExisteEnParrilla();
                 }
@@ -1067,6 +1077,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                 this.seleccDados.setEnabled(false);
                 reiniciarJLabelValorAcumulado();
                 mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
+                gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
             } else {
                 mensaje.noSePuedeRobarEsaRacion();
             }
@@ -1076,6 +1087,47 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButtonRobarActionPerformed
+
+    private void jButtonCogerRacionMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCogerRacionMenorActionPerformed
+        // Selecciona al jugador que le toca
+        Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
+        if (jugadorAux.getValorSeleccionados() >= 21 && jugadorAux.getValorSeleccionados() <= 36) {
+            if (jugadorAux.tieneGusano()) {
+
+                // El jugador coge la ración y la pone en su pila
+                if (jugadorAux.cogerRacionMenor(PARRILLA)) {
+
+                    // Se deshabilita en la parrilla la ultima cogida
+                    int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor() % Parrilla.VALOR_RACION_INICIAL;
+                    LISTA_RACIONES.get(valorJLabel).setEnabled(false);
+
+                    // Se pone la última ración del jugador en JLabel de sus raciones
+                    establecerRacionJugadorJLabel(jugadorAux);
+
+                    // Ahora el jugador tiene que terminar el turno
+                    gestorTurnos.pasarSiguiente();
+
+                    // Se reinician los componentes gráficos
+                    reiniciarJLabelDados();
+                    reiniciarListaCheck();
+                    this.lanzarDados.setEnabled(true);
+                    this.seleccDados.setEnabled(false);
+                    reiniciarJLabelValorAcumulado();
+                    mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
+                    gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
+                } else {
+                    mensaje.racionNoExisteEnParrilla();
+                }
+
+            } else {
+                mensaje.noPuedeCogerRacion();
+            }
+        } else {
+            this.jTextArea1.setText("Con ese valor de dados no se puede coger ninguna ración");
+        }
+
+
+    }//GEN-LAST:event_jButtonCogerRacionMenorActionPerformed
 
     // Este método cuenta las veces que sale cada cara y lo devuelve en 
     // un array de seis posiciones (0 - cara 1, 1 - cara 2,etc)

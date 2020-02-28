@@ -86,4 +86,9 @@ public class Mensajes {
     public void noSePuedeRobarEsaRacion(){
         this.mensaje.setText("No se puede robar esa ración a ningún jugador");
     }
+    
+    public void racionExiste(){
+        this.mensaje.setText("Esa ración existe en la parrilla. Prueba a cogerla");
+    }
+    
 }

@@ -64,9 +64,22 @@ public class Parrilla {
     public void borrarRacion(Integer valorRacion) {
         lista.remove(valorRacion);
     }
-
+    // Borra la ración de la parrilla
     public void borrarRacion(Racion racion){
         lista.remove(racion.getValor());
+    }
+    
+    // Busca la ración inmediatamente menor a la ración pasada
+    // Si no existe ninguna con valor menor devuelve null
+    public Racion buscarRacionMenor(int valor){
+        Racion menor = null;
+        for(int i = valor - 1; i>=VALOR_RACION_INICIAL;i--){
+            // Existe ese valor en la parrilla
+            if (lista.containsKey(i)){
+                return lista.get(i);
+            }
+        }
+        return menor;
     }
     // Pone la ración en la parrilla, si no existe
     // En caso de no ser la de mayor valor, retira
@@ -88,28 +101,4 @@ public class Parrilla {
             System.out.println(r);
         }
     }
-
-//    public static void main(String[] args) {
-//        Parrilla p = new Parrilla();
-//        p.imprimir();
-//        System.out.println("Racion mayor " + p.getRacionMayor());
-//        System.out.println("Racion 22 " + p.getRacionParrilla(22));
-//        p.borrarRacion(36);
-//        p.borrarRacion(36);
-//        p.borrarRacion(35);
-//        p.borrarRacion(22);
-//        p.borrarRacion(29);
-//        p.imprimir();
-//        System.out.println("Racion mayor " + p.getRacionMayor());
-//        System.out.println("Existe 22 " + p.existeRacion(Racion.R22));
-//        System.out.println("Existe 36 " + p.existeRacion(Racion.R36));
-//        p.devolverRacion(Racion.R22);
-//        p.devolverRacion(Racion.R22);
-//        p.borrarRacion(33);
-//        p.devolverRacion(Racion.R29);
-//        p.imprimir();
-//        System.out.println("Existe 29 " + p.existeRacion(29));
-//        System.out.println("Existe 21 " + p.existeRacion(21));
-//        System.out.println("Existe 36 " + p.existeRacion(36));
-//    }
 }
