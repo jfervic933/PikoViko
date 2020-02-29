@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package carlos.pikopiko;
 
 import javax.swing.ImageIcon;
 
 /**
  *
- * @author carlos
+ * @author jcarlosvico@maralboran.es
  */
 public enum Racion {
     
@@ -33,13 +28,11 @@ public enum Racion {
     private final int valor;
     private final int numeroGusanos;
     private final ImageIcon imagen;
-    private boolean disponible; // La ración está dada la vuelta o no
 
     private Racion(int valor, int numeroGusanos, ImageIcon imagen) {
         this.valor = valor;
         this.numeroGusanos = numeroGusanos;
         this.imagen = imagen;
-        this.disponible = true;
     }
 
     public int getValor() {
@@ -53,24 +46,10 @@ public enum Racion {
     public ImageIcon getImagen() {
         return imagen;
     }
-    
-    // Este método hace que la Racion quede fuera del juego
-    public void ocultarRacion(){
-        this.disponible = false;
-    }
 
     @Override
     public String toString() {
-        return "Racion{" + "valor=" + valor + ", numeroGusanos=" + numeroGusanos + ", disponible=" + disponible + '}';
-    }
-    
-    public boolean isDisponible(){
-        return disponible;
-    }
-    
-    public void habilitarRacion(){
-        this.disponible = true;
-    }
-    
+        return "Racion{" + "valor=" + valor + ", numeroGusanos=" + numeroGusanos + '}';
+    }  
     
 }
