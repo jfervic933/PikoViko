@@ -10,8 +10,8 @@ import java.util.TreeMap;
 public class Parrilla {
 
     // Una parrilla es una tabla donde hacemos corresponder el valor 
-    // del dado con la ficha. Esto permite ordenar la parrilla por valor, que
-    // además no se puede repetir.
+    // de la ración con la ficha. Esto permite tener ordenada la parrilla 
+    // por valor, que además no se puede repetir.
     private SortedMap<Integer, Racion> lista;
     public static final int NUMERO_RACIONES = 16;
     public static final int VALOR_RACION_INICIAL = 21;
@@ -42,29 +42,32 @@ public class Parrilla {
         lista.put(Racion.R36.getValor(), Racion.R36);
     }
 
+    // Obtiene la ficha correspondiente a ese valor de ración (21 - 36)
     public Racion getRacionParrilla(Integer i) {
         return lista.get(i);
     }
-
+    // Comprueba si esa ración existe en la parrilla
     public boolean existeRacion(Racion r) {
         return lista.containsValue(r);
     }
-
+    // Comprueba si existe ese valor de ración la parrilla
     public boolean existeRacion(Integer i) {
         Racion aux = lista.get(i);
         return aux != null;
     }
-
+    // Devuelve la ración de mayor valor (21 - 36) que exista
+    // en la parrilla
     public Racion getRacionMayor() {
         return lista.get(lista.lastKey());
     }
 
-    // Saca la ración de la parrilla, si existe la key valorRacion
+    // Borra la ración de la parrilla, si existe la key valorRacion
     // En caso de no existir no hace nada
     public void borrarRacion(Integer valorRacion) {
         lista.remove(valorRacion);
     }
-    // Borra la ración de la parrilla
+    
+    // Borra la ración de la parrilla, si existe
     public void borrarRacion(Racion racion){
         lista.remove(racion.getValor());
     }
@@ -81,6 +84,7 @@ public class Parrilla {
         }
         return menor;
     }
+    
     // Pone la ración en la parrilla, si no existe
     // En caso de no ser la de mayor valor, retira
     // la ración de mayor valor y devuelve la racion mayor
@@ -94,12 +98,6 @@ public class Parrilla {
             }
         }
         return null;
-    }
-
-    private void imprimir() {
-        for (Racion r : lista.values()) {
-            System.out.println(r);
-        }
     }
     
     public boolean estaVacia(){
