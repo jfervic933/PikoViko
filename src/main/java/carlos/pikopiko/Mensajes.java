@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package carlos.pikopiko;
 
 import javax.swing.JTextArea;
@@ -13,7 +8,7 @@ import javax.swing.JTextArea;
  */
 public class Mensajes {
 
-    private JTextArea mensaje;
+    private final JTextArea mensaje;
 
     public Mensajes(JTextArea mensaje) {
         this.mensaje = mensaje;
@@ -91,4 +86,12 @@ public class Mensajes {
         this.mensaje.setText("Esa ración existe en la parrilla. Prueba a cogerla");
     }
     
+    public void seleccionDadosValida(){
+        this.mensaje.setText("Selección de dados válida...\n"
+                    + "Ahora puedes:\n"
+                    + "\tA - Volver a lanzar dados\n"
+                    + "\tB - Coger una ración\n"
+                    + "\tC - Robar una ración\n"
+                    + "\tD - Terminar tu turno");
+    }
 }
