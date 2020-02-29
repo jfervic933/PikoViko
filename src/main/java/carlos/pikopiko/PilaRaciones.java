@@ -9,7 +9,8 @@ import java.util.ArrayList;
  */
 public class PilaRaciones {
     
-    private ArrayList<Racion> pila;
+    // Típica pila LIFO con una lista
+    private final ArrayList<Racion> pila;
     
     public PilaRaciones(){
         pila = new ArrayList<>();
@@ -44,10 +45,6 @@ public class PilaRaciones {
     
     public boolean compararConUltimaRacion(Racion r){
         return consultarUltimaRacion() == r;
-    }
-    
-    public void imprimirRaciones(){
-        pila.forEach(System.out::println);
     }
 
     @Override
