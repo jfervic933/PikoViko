@@ -8,14 +8,16 @@ import java.util.ArrayList;
  */
 public class Jugador {
 
-    private String nombre;
-    private Dado[] tiradaDados;
-    private Dado[] dadosSeleccionados;
+    // Atributos del jugador
+    private final String nombre;
+    private final Dado[] tiradaDados;
+    private final Dado[] dadosSeleccionados;
     private boolean turno;
-    private PilaRaciones misRaciones;
+    private final PilaRaciones misRaciones;
     private boolean tieneGusano;
     private int contadorNoBloqueados;
 
+    // Constructor del jugador en función del nombre
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.tiradaDados = new Dado[8];
@@ -29,8 +31,7 @@ public class Jugador {
         misRaciones = new PilaRaciones();
     }
 
-    // Tira de nuevo los dados no seleccionados
-    // Devuelve el número de dados movidos
+    // Mueve los dados no seleccionados y los cuenta
     public void tirarDados() {
         // Mueve los dados no bloqueados
         contadorNoBloqueados = 0;
@@ -42,8 +43,9 @@ public class Jugador {
         }
     }
 
-    // Miro si en la tirada he sacado valores que ya estaban bloqueados
-    // entonces tirada fallida
+    // Este método devuelve si la tirada es fallida o no
+    // Se mira si en la tirada se han sacado todos los valores 
+    // que ya estaban bloqueados, entonces tirada fallida
     public boolean tiradaFallida() {
         int contador = 0;
         for (Dado aux : tiradaDados) {
@@ -58,8 +60,6 @@ public class Jugador {
                 }
             }
         }
-        System.out.println("Contador no bloqueado " + contadorNoBloqueados);
-        System.out.println("Contador " + contador);
         // True si la tirada es fallida
         return (contador == contadorNoBloqueados);
     }
@@ -85,6 +85,7 @@ public class Jugador {
         tieneGusano = false;
     }
 
+    // Suma los valores de los dados seleccionados del jugador y lo devuelve
     public int getValorSeleccionados() {
         int acumulador = 0;
         for (Dado aux : dadosSeleccionados) {
@@ -110,14 +111,11 @@ public class Jugador {
         return tiradaDados;
     }
 
-    public boolean isTurno() {
-        return turno;
-    }
-
     public Dado[] getDadosSeleccionados() {
         return dadosSeleccionados;
     }
 
+    // Indica si todos los dados de la tirada están bloqueados
     public boolean todosBloqueados() {
         for (Dado aux : tiradaDados) {
             if (!aux.isBloqueado()) {
@@ -127,6 +125,7 @@ public class Jugador {
         return true;
     }
 
+    // Este método sirve para reiniciar los dados cuando se cambia el turno
     public void desbloquearDados() {
         for (int i = 0; i < tiradaDados.length; i++) {
             tiradaDados[i].desbloquear();
@@ -134,6 +133,8 @@ public class Jugador {
         }
     }
 
+    // Método que roba una ración en función de los valores de dados del
+    // jugador. Si no hay ningún jugador al que robar devuelve false
     public boolean robarRacion(TurnoJugadores turno) {
         // Obtengo el valor de dados seleccionados del jugador
         int valorSeleccionados = this.getValorSeleccionados();
@@ -150,23 +151,12 @@ public class Jugador {
                     // Se puede robar
                     if (aux!=null && aux.getValor() == valorSeleccionados) {
                         // Se la quito al jugador que la tiene
-                        System.out.println("RACIONES DE " + j.getNombre() + " ANTES DE ROBAR\n"
-                                + "la ración" + aux);
                         j.getMisRaciones().sacarRacion();
-                        System.out.println("RACIONES DE " + j.getNombre() + " DESPUES DE ROBAR\n"
-                                + "la ración" + aux);
-                        j.getMisRaciones().imprimirRaciones();
                         // Se la pongo al jugador que le toca
                         this.misRaciones.ponerRacion(aux);
-                        System.out.println("RACIONES DE " + this.getNombre() + " DESPUES DE ROBAR\n"
-                                + "la racion " +aux);
-                        this.getMisRaciones().imprimirRaciones();
-                        System.out.println("El jugador " + this.nombre + " roba la racion"
-                                + " a " + j.getNombre());
                         return true;
                     }
                 }
-
             }
             return false;
         }
@@ -246,7 +236,6 @@ public class Jugador {
         return parrilla.existeRacion(valorBuscar);
     }
 
-    
     @Override
     public String toString() {
         return "Jugador{" + "nombre=" + nombre + ", turno=" + turno + ", misRaciones=" + misRaciones.toString() + ", tieneGusano=" + tieneGusano + '}';
