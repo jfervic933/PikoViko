@@ -59,5 +59,12 @@ public class PilaRaciones {
         return raciones;
     }
     
+    public int obtenerGusanosTotales(){
+        int suma = 0;
+        for (Racion racion : pila) {
+            suma+=racion.getNumeroGusanos();
+        }
+        return suma;
+    }
     
 }

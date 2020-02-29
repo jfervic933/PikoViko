@@ -101,4 +101,8 @@ public class Parrilla {
             System.out.println(r);
         }
     }
+    
+    public boolean estaVacia(){
+        return lista.isEmpty();
+    }
 }

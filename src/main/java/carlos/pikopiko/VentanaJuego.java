@@ -827,6 +827,22 @@ public class VentanaJuego extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void mostrarGanador() {
+        String ganador = "", texto = "";
+        int valorMayor = 0;
+        // Busca el jugador con mayor número de gusanos en su poder
+        for (Jugador aux : gestorTurnos.getListaJugadores()) {
+            texto += "Jugador: " + aux.getNombre() + "\n" + aux.getMisRaciones().toString()
+                    + "\n ValorGus: " + aux.getMisRaciones().obtenerGusanosTotales();
+            if (aux.getMisRaciones().obtenerGusanosTotales() > valorMayor) {
+                ganador = aux.getNombre();
+                valorMayor = aux.getMisRaciones().obtenerGusanosTotales();
+            }
+        }
+        texto += "\n -------- EL GANADOR ES: " + ganador + " CON " + valorMayor + " GUSANOS ----------";
+        JOptionPane.showConfirmDialog(null, texto);
+    }
+
     // Método que implementa el botón Lanzar Dados
     private void lanzarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosActionPerformed
         // Selecciona al jugador que le toca
@@ -968,6 +984,10 @@ public class VentanaJuego extends javax.swing.JFrame {
                     // Ahora el jugador tiene que terminar el turno
                     gestorTurnos.pasarSiguiente();
 
+                    if (PARRILLA.estaVacia()) {
+                        mostrarGanador();
+                        this.dispose();
+                    }
                     // Se reinician los componentes gráficos
                     reiniciarJLabelDados();
                     reiniciarListaCheck();
@@ -1033,9 +1053,6 @@ public class VentanaJuego extends javax.swing.JFrame {
             // Actualiza el jlabel del jugador
             establecerRacionJugadorJLabel(jugador);
 
-            //System.out.println("El jugador debe devolver " + ultima);
-//        System.out.println("DESPUES sacar UNA RACION - LISTA DE JUGADORES -");
-//        gestorTurnos.getListaJugadores().forEach(System.out::println);
             gestorTurnos.pasarSiguiente();
             reiniciarJLabelDados();
             reiniciarListaCheck();
@@ -1103,7 +1120,10 @@ public class VentanaJuego extends javax.swing.JFrame {
 
                     // Se pone la última ración del jugador en JLabel de sus raciones
                     establecerRacionJugadorJLabel(jugadorAux);
-
+                    if (PARRILLA.estaVacia()) {
+                        mostrarGanador();
+                        this.dispose();
+                    }
                     // Ahora el jugador tiene que terminar el turno
                     gestorTurnos.pasarSiguiente();
 
