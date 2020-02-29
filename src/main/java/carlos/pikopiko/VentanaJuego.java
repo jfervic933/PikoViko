@@ -1096,7 +1096,6 @@ public class VentanaJuego extends javax.swing.JFrame {
                 this.seleccDados.setEnabled(false);
                 reiniciarJLabelValorAcumulado();
                 mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
-                gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
             } else {
                 mensaje.noSePuedeRobarEsaRacion();
             }
@@ -1137,7 +1136,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                     this.seleccDados.setEnabled(false);
                     reiniciarJLabelValorAcumulado();
                     mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
-                    gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
+                   
                 } else {
                     mensaje.racionNoExisteEnParrilla();
                 }
