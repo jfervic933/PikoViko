@@ -898,20 +898,14 @@ public class VentanaJuego extends javax.swing.JFrame {
         Jugador aux = this.gestorTurnos.getJugadorTurno();
         // Guarda en una lista los datos marcados en los checkbox
         ArrayList<Integer> listaDadosSeleccionados = seleccionarDados();
-
         // Valida esa lista para ver los posibles fallos al seleccionar dados
         if (validarListaDadosSeleccionados(listaDadosSeleccionados)) {
-            this.jTextArea1.setText("Selección de dados válida...\n"
-                    + "Ahora puedes:\n"
-                    + "\tA - Volver a lanzar dados\n"
-                    + "\tB - Coger una ración\n"
-                    + "\tC - Robar una ración\n"
-                    + "\tD - Terminar tu turno");
+            // ------------ LISTA DE DADOS VÁLIDA ---------------
+            mensaje.seleccionDadosValida();
             // Hay que bloquear esos dados seleccionados
             for (int i : listaDadosSeleccionados) {
                 // Bloqueo el dado
                 aux.seleccionarDado(i);
-
                 // Deshabilito el label
                 deshabilitarDado(i);
             }
@@ -924,7 +918,6 @@ public class VentanaJuego extends javax.swing.JFrame {
                 // Se habilita el botón para lanzar dados
                 this.lanzarDados.setEnabled(true);
             }
-
             // Se deshabilita el botón de selección de dados
             this.seleccDados.setEnabled(false);
         } else if (aux.todosBloqueados()) {
@@ -936,18 +929,23 @@ public class VentanaJuego extends javax.swing.JFrame {
         mostrarValorAcumuladoDadosJugadorJLabel(gestorTurnos.getOrdenJugador(gestorTurnos.getJugadorTurno()), gestorTurnos.getJugadorTurno());
     }//GEN-LAST:event_seleccDadosActionPerformed
 
+    // Este método establece la ración a mostrar en función de la pila
+    // del jugador que se le pasa como parámetro
     private void establecerRacionJugadorJLabel(Jugador jugador) {
-        // Esto devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
-
+        // Devuelve 0,1,2,3 dependiendo del jugador que esté en su turno
         int ordenJugador = gestorTurnos.getOrdenJugador(jugador);
-        System.out.println("Estableciendo JLabel jugador " + jugador.getNombre());
+        // Obtiene la última ración del jugador
         Racion r = jugador.getMisRaciones().consultarUltimaRacion();
-
+        // Se establece una imagen por defecto
         ImageIcon imagen = new ImageIcon("resources/caragusano.png");
+        // Si la ración obtenida no es null significa que tiene raciones 
+        // en su pila
         if (r != null) {
-            System.out.println("La ración a poner es " + r.name());
+            // Establece la imagen en función de esa última ración
             imagen = r.getImagen();
         }
+        // En función del jugador pasado se establece la nueva imagen
+        // de sus raciones
         switch (ordenJugador) {
             case 0:
                 this.jLabel42.setIcon(imagen);
@@ -964,16 +962,18 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
     }
 
+    // Método que implementa el botón coger ración
     private void jButtonCogerRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCogerRacionActionPerformed
-
         // Selecciona al jugador que le toca
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
-        if (jugadorAux.getValorSeleccionados() >= 21 && jugadorAux.getValorSeleccionados() <= 36) {
+        // Si el valor suma de dados es un valor válido
+        if (jugadorAux.getValorSeleccionados() >= Parrilla.VALOR_RACION_INICIAL
+                && jugadorAux.getValorSeleccionados() <= 
+                Parrilla.VALOR_RACION_INICIAL + Parrilla.NUMERO_RACIONES) {
+            // Si el jugador tiene gusano, puede coger ración
             if (jugadorAux.tieneGusano()) {
-
                 // El jugador coge la ración y la pone en su pila
                 if (jugadorAux.cogerRacion(PARRILLA)) {
-
                     // Se deshabilita en la parrilla la ultima cogida
                     int valorJLabel = jugadorAux.getMisRaciones().consultarUltimaRacion().getValor() % Parrilla.VALOR_RACION_INICIAL;
                     LISTA_RACIONES.get(valorJLabel).setEnabled(false);
@@ -981,9 +981,9 @@ public class VentanaJuego extends javax.swing.JFrame {
                     // Se pone la última ración del jugador en JLabel de sus raciones
                     establecerRacionJugadorJLabel(jugadorAux);
 
-                    // Ahora el jugador tiene que terminar el turno
+                    // Ahora el jugador tiene que terminar el turno y pasarlo
                     gestorTurnos.pasarSiguiente();
-
+                    // Si la parrilla se ha quedado sin raciones, el juego termina
                     if (PARRILLA.estaVacia()) {
                         mostrarGanador();
                         this.dispose();
@@ -995,7 +995,6 @@ public class VentanaJuego extends javax.swing.JFrame {
                     this.seleccDados.setEnabled(false);
                     reiniciarJLabelValorAcumulado();
                     mensaje.informarTurno(gestorTurnos.getJugadorTurno().getNombre());
-                    gestorTurnos.getJugadorTurno().getMisRaciones().imprimirRaciones();
                 } else {
                     mensaje.racionNoExisteEnParrilla();
                 }
@@ -1006,13 +1005,13 @@ public class VentanaJuego extends javax.swing.JFrame {
         } else {
             this.jTextArea1.setText("Con ese valor de dados no se puede coger ninguna ración");
         }
-
-
     }//GEN-LAST:event_jButtonCogerRacionActionPerformed
-
+    
+    // Método que implementa el botón terminar turno
     private void jButtonTerminarTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTerminarTurnoActionPerformed
+        // Obtiene al jugador que le toca
         Jugador jugador = gestorTurnos.getJugadorTurno();
-
+        // Si el jugador tiene raciones en su poder, entonces debe devolver
         if (jugador.getMisRaciones().numeroRaciones() > 0) {
             jTextArea1.setText("Debes devolver una ración");
         } else if (jugador.todosBloqueados() || jugador.tiradaFallida()) {
@@ -1032,7 +1031,8 @@ public class VentanaJuego extends javax.swing.JFrame {
             jTextArea1.setText("Aún te quedan dados en juego. Sigue tirando");
         }
     }//GEN-LAST:event_jButtonTerminarTurnoActionPerformed
-
+    
+    // Método que implementa el botón devolver ración
     private void jButtonDevolverRacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDevolverRacionActionPerformed
         // Obtiene el jugador que tiene el turno
         Jugador jugador = gestorTurnos.getJugadorTurno();
@@ -1040,9 +1040,11 @@ public class VentanaJuego extends javax.swing.JFrame {
         Racion ultima = jugador.getMisRaciones().sacarRacion();
         // Se pone esa ración en la parrilla
         if (ultima != null) {
+            // En quitarParrilla se guarda la ración que hay que eliminar por
+            // ser la mayor
             Racion quitarParrilla = PARRILLA.devolverRacion(ultima);
             // Se colocan los JLabel correctamente
-            // Se deshabilita en la parrilla la ultima cogida
+            // Se habilita en la parrilla la ultima cogida
             int valorJLabel = ultima.getValor() % Parrilla.VALOR_RACION_INICIAL;
             LISTA_RACIONES.get(valorJLabel).setEnabled(true);
             if (quitarParrilla != null) { // Hay que deshabilitar esa racion en los JLabel
@@ -1052,7 +1054,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
             // Actualiza el jlabel del jugador
             establecerRacionJugadorJLabel(jugador);
-
+            // Reinicia componentes gráficos
             gestorTurnos.pasarSiguiente();
             reiniciarJLabelDados();
             reiniciarListaCheck();
@@ -1068,9 +1070,9 @@ public class VentanaJuego extends javax.swing.JFrame {
         } else {
             this.jTextArea1.setText("No tienes raciones para devolver");
         }
-
     }//GEN-LAST:event_jButtonDevolverRacionActionPerformed
-
+    
+    // Método que implementa el botón robar ración
     private void jButtonRobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRobarActionPerformed
         // Selecciona al jugador que le toca
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
@@ -1104,7 +1106,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButtonRobarActionPerformed
-
+    
+    // Método que implementa el botón coger ración menor
     private void jButtonCogerRacionMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCogerRacionMenorActionPerformed
         // Selecciona al jugador que le toca
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
@@ -1184,7 +1187,9 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
         return array;
     }
-
+    
+    // Este método devuelve true si ese valor del parámetro ya está
+    // en los dados bloqueados del jugador que se pasa como parámetro
     private static boolean buscarValorEnBloqueados(int valor, Jugador aux) {
         for (Dado x : aux.getTiradaDados()) {
             if (x.isBloqueado() && x.getCaraSeleccionada() == valor) {
@@ -1211,6 +1216,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         }
     }
 
+    // Este método sombrea los dados (imagen y checkbox)
+    // Se pasa como parámetro el dado a deshabilitar (0-7)
     private void deshabilitarDado(int i) {
         switch (i) {
             case 0:
@@ -1298,7 +1305,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         LISTA_DADOS.add(jLabel25);
     }
 
-    // Establece a cada JLabel del dado su imagen inicial para comenzar el juego
+    // Establece a cada JLabel del dado su imagen inicial para comenzar 
+    // el juego o el turno del jugador
     private void reiniciarJLabelDados() {
         ImageIcon icon = new ImageIcon("resources/carauno.png");
         for (JLabel aux : LISTA_DADOS) {
