@@ -6,9 +6,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-// Cosas por arreglar: 
-// Al coger racion que coja la correcta porque si coge una menor no sombrea
-// el jlabel
 /**
  *
  * @author jcarlosvico@maralboran.es
@@ -24,15 +21,17 @@ public class VentanaJuego extends javax.swing.JFrame {
     private static final ArrayList<JLabel> LISTA_NOMBRES_JUGADORES = new ArrayList<>();
 
     public VentanaJuego() {
+        // Se solicita número de jugadores y nombres, para iniciar la ventana del juego
         gestorTurnos = new TurnoJugadores(inicializarListaJugadores());
         // Si hay jugadores en la lista
         if (!gestorTurnos.getListaJugadores().isEmpty()) {
-
             // Crea y establece posición de los componentes gráficos en la
             // ventana
             initComponents();
+            // Inicializa el objeto con el textArea para ir informando a los
+            // jugadores con las instrucciones del juego
             mensaje = new Mensajes(jTextArea1);
-            // Los siguientes métodos agregan ciertos componentes gráficos
+            // Los siguientes métodos agregan componentes gráficos
             // a distintas listas para que luego sea más cómodo trabajar con 
             // dichos componentes
             rellenarListaDadosJLabel();
@@ -44,12 +43,13 @@ public class VentanaJuego extends javax.swing.JFrame {
             reiniciarJLabelDados();
             reiniciarListaCheck();
             reiniciarJLabelValorAcumulado();
-            // Inicialmente el botón seleccionar dado está deshabilitado
+            // Inicialmente el botón seleccionar dados está deshabilitado
             this.seleccDados.setEnabled(false);
             // En el textArea no se puede escribir
             this.jTextArea1.setEditable(false);
-            // Mensaje inicial
+            // Mensaje inicial de bienvenida al juego
             mensaje.bienvenida(gestorTurnos.getJugadorTurno().getNombre());
+            // El contenido inicial de las raciones de cada jugador está vacío
             this.jLabel42.setText("");
             this.jLabel43.setText("");
             this.jLabel44.setText("");
@@ -62,7 +62,7 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     // Este método enseña un diálogo para escoger número de jugadores y devuelve
     // el dato seleccionado
-    public static int pedirNumeroJugadores() {
+    private static int pedirNumeroJugadores() {
         Integer[] numero = {2, 3, 4};
 
         Integer opcion = (Integer) JOptionPane.showInputDialog(null, "Selecciona número de jugadores", "Elegir",
@@ -73,7 +73,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     }
 
     // Este método inicializa la lista de jugadores, en función del número
-    // de jugadores elegidos. Devuelve true si se inicializa la lista correct.
+    // de jugadores elegidos. Devuelve lista vacía si no hay jugadores 
     private ArrayList<Jugador> inicializarListaJugadores() {
         int numeroJugadores = pedirNumeroJugadores();
         ArrayList<Jugador> listaJug = new ArrayList<>();
@@ -89,13 +89,17 @@ public class VentanaJuego extends javax.swing.JFrame {
         return listaJug;
     }
 
-    // Este método devuelve false en caso de que la lista de dados
-    // contenga valores distintos o bien ya haya sido seleccionado ese valor
+    // Método que valida si la lista de dados seleccionados
+    // Devuelve false en caso de que la lista de dados
+    // A - Contenga valores distintos 
+    // B - Ese valor de dado ya había sido seleccionado
+    // C - Faltan dados por coger del mismo valor
+    // D - Se ha seleccionado un solo dado distinto de gusano habiendo grupos de dados por elegir
     private boolean validarListaDadosSeleccionados(ArrayList<Integer> lista) {
-        // Selecciona el jugador
+        // Selecciona el jugador al que le toca
         Jugador aux = this.gestorTurnos.getJugadorTurno();
+        // Guarda los dados del jugador
         Dado[] tiradaJugador = aux.getTiradaDados();
-
         // Si la lista de seleccionados no está vacía
         if (!lista.isEmpty()) {
             // CASO A. Si hay valores de dados distintos, 
@@ -109,13 +113,13 @@ public class VentanaJuego extends javax.swing.JFrame {
                     return false;
                 }
             }
-            // Si llega aquí es que son todas las caras iguales
+            // Si llega aquí todos los dados seleccionados son iguales
 
             // CASO B. Si ese valor de dado ya había sido seleccionado,
             // entonces la selección no es válida
             // Recorre todos los dados, si el dado está bloqueado y contiene
-            // el mismo valor que el seleccionado ahora significa que ya fue
-            // seleccionado
+            // el mismo valor que el seleccionado en este momento
+            // significa que ya fue seleccionado
             int contador = 0;
             for (Dado d : tiradaJugador) {
                 if (d.isBloqueado() && d.getCaraSeleccionada() == valorDado) {
@@ -142,21 +146,20 @@ public class VentanaJuego extends javax.swing.JFrame {
                 int[] numeroCaras = VentanaJuego.contadorCaras(aux);
                 for (int i : numeroCaras) {
                     if (i > 1) {
-
                         mensaje.hayQueSeleccionarGruposDeDados();
                         return false;
                     }
                 }
             }
-
             return true;
         } else { // Lista vacía
             mensaje.noHayDadosSeleccionados();
             return false;
         }
-
     }
 
+    // Recorre los check disponibles y seleccionados y los guarda
+    // en una lista para saber qué dados han sido seleccionados
     private ArrayList<Integer> seleccionarDados() {
         ArrayList<Integer> listaSeleccionados = new ArrayList<>();
         JCheckBox aux;
@@ -827,12 +830,14 @@ public class VentanaJuego extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Método que genera un diálogo que muestra las raciones de cada jugador
+    // y el resultado del ganador
     private void mostrarGanador() {
         String ganador = "", texto = "";
         int valorMayor = 0;
         // Busca el jugador con mayor número de gusanos en su poder
         for (Jugador aux : gestorTurnos.getListaJugadores()) {
-            texto += "Jugador: " + aux.getNombre() + "\n" + aux.getMisRaciones().toString()
+            texto += "\nJugador: " + aux.getNombre() + "\n" + aux.getMisRaciones().toString()
                     + "\n ValorGus: " + aux.getMisRaciones().obtenerGusanosTotales();
             if (aux.getMisRaciones().obtenerGusanosTotales() > valorMayor) {
                 ganador = aux.getNombre();
@@ -846,12 +851,9 @@ public class VentanaJuego extends javax.swing.JFrame {
     // Método que implementa el botón Lanzar Dados
     private void lanzarDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosActionPerformed
         // Selecciona al jugador que le toca
-        //  Jugador jugadorAux = listaJugadores.get(VentanaJuego.turnoJugador);
         Jugador jugadorAux = this.gestorTurnos.getJugadorTurno();
-
-        // Tira los dados
+        // El jugador tira los dados
         jugadorAux.tirarDados();
-
         // Recorre los ocho dados para actualizar imágenes
         for (int i = 0; i < jugadorAux.getTiradaDados().length; i++) {
             // Obtengo cada dado
@@ -864,14 +866,13 @@ public class VentanaJuego extends javax.swing.JFrame {
         // Se deshabilita el botón lanzar dados hasta que seleccione dados
         // o termine el turno
         this.lanzarDados.setEnabled(false);
-
-        // Si la tirada no es fallida
-        if (!jugadorAux.tiradaFallida()) {
+        
+        if (!jugadorAux.tiradaFallida()) { // -------- Si la tirada no es fallida ----------
             // Se habilita el botón de seleccionar dados
             this.seleccDados.setEnabled(true);
             // Muestra el mensaje de ayuda
             this.jTextArea1.setText("Ahora debes seleccionar dados o terminar tu turno...");
-        } else { // Tirada Fallida
+        } else {                        //  -------- Tirada fallida ---------------------
             mensaje.tiradaFallida();
             // Deshabilita boton de selección de dados
             this.seleccDados.setEnabled(false);
@@ -880,6 +881,7 @@ public class VentanaJuego extends javax.swing.JFrame {
             this.jButtonCogerRacionMenor.setEnabled(false);
             this.jButtonRobar.setEnabled(false);
             // Habilita / Deshabilita el terminar turno y devolver ración
+            // en función de si el jugador tiene o no raciones en su poder
             if (jugadorAux.getMisRaciones().estaVacia()) {
                 this.jButtonTerminarTurno.setEnabled(true);
                 this.jButtonDevolverRacion.setEnabled(false);
@@ -887,9 +889,7 @@ public class VentanaJuego extends javax.swing.JFrame {
                 this.jButtonTerminarTurno.setEnabled(false);
                 this.jButtonDevolverRacion.setEnabled(true);
             }
-
         }
-
     }//GEN-LAST:event_lanzarDadosActionPerformed
 
     // Método que implementa el botón Seleccionar Dados
